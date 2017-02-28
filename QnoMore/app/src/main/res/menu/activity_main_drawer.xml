@@ -5,16 +5,16 @@
         <item
                 android:id="@+id/nav_account_circle"
                 android:icon="@drawable/ic_account_circle"
-                android:title="Account"/>
+                android:title="@string/account"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/communicate">
         <menu>
 
             <item
                     android:id="@+id/nav_share"
                     android:icon="@drawable/ic_menu_share"
-                    android:title="Share"/>
+                    android:title="@string/share"/>
 
         </menu>
     </item>
