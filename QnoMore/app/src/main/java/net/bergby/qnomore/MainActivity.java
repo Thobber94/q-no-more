@@ -3,7 +3,6 @@ package net.bergby.qnomore;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
