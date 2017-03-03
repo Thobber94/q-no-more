@@ -11,4 +11,5 @@
     <string name="share">Share</string>
     <string name="name">Thomas Bergby</string>
     <string name="email">thomas.bergby@gmail.com</string>
+    <string name="loading">Loading. Please wait.</string>
 </resources>
