@@ -1,71 +1,60 @@
 package net.bergby.qnomore;
 
-import android.app.ProgressDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.api.*;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.squareup.picasso.Picasso;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener
 {
 
-
-    // Global variables
-    // Set the Google API client
-    private GoogleApiClient mGoogleApiClient;
-    private static final String TAG = "SignInActivity";
-    private static final int RC_SIGN_IN = 9001;
-    //private NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    //private View hView = navigationView.getHeaderView(0);
-    //TextView nav_user = (TextView) hView.findViewById(R.id.nav_view_user);
-    //TextView nav_email = (TextView) hView.findViewById(R.id.nav_view_email);
-    private ProgressDialog mProgressDialog;
-
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Button listener
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView = navigationView.getHeaderView(0);
 
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .build();
+        TextView nav_user = (TextView) hView.findViewById(R.id.nav_view_user);
+        TextView nav_email = (TextView) hView.findViewById(R.id.nav_view_email);
+        CircleImageView nav_userImage = (CircleImageView) hView.findViewById(R.id.profile_image);
 
+        Intent intent = getIntent();
+        String email = intent.getStringExtra(LoginActivity.nav_email);
+        String user = intent.getStringExtra(LoginActivity.nav_user);
+        String image = intent.getStringExtra(LoginActivity.nav_userImage);
 
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        nav_email.setText(email);
+        nav_user.setText(user);
+        Picasso.with(this)
+                .load(image)
+                .into(nav_userImage);
+
+        initSidebar();
     }
+
     private void initSidebar()
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -87,13 +76,16 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //setNavHeaderInfo();
+
+
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -101,21 +93,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             return true;
         }
 
@@ -124,32 +119,38 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item)
+    {
+        // Fragments
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_account_circle)
         {
             Log.i("Info", "Account clicked");
+            // Fragment handling
+            EditProfileFragment editProfileFragment = new EditProfileFragment();
+
+            fragmentTransaction.replace(R.id.content_main, editProfileFragment);
         }
 
         else if (id == R.id.nav_share)
         {
             Log.i("Info", "Share clicked");
+            Fragment2 fragment2 = new Fragment2();
+            fragmentTransaction.replace(R.id.content_main, fragment2);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
         return true;
     }
-
-    private void setNavHeaderInfo()
-    {
-
-        //nav_email.setText("thomas.bergby@gmail.com");
-        //nav_user.setText("Thomas Bergby");
-    }
-
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
@@ -157,49 +158,4 @@ public class MainActivity extends AppCompatActivity
         Log.e("Error", "Connection Failed");
     }
 
-    @Override
-    public void onClick(View view)
-    {
-        switch (view.getId())
-        {
-            case R.id.sign_in_button:
-                signIn();
-                break;
-        }
-    }
-
-    private void signIn()
-    {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from the intent
-        if (requestCode == RC_SIGN_IN)
-        {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }
-    }
-
-    private void handleSignInResult(GoogleSignInResult result)
-    {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess())
-        {
-            // Signed in successfully
-            GoogleSignInAccount userAccount = result.getSignInAccount();
-            System.out.println(userAccount.getDisplayName());
-        }
-        else
-        {
-            System.out.println("Not authenticated. Boo");
-            System.out.println(result.getStatus().getStatusCode());
-        }
-    }
 }
