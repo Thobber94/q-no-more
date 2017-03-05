@@ -13,4 +13,5 @@
     <string name="email">name.surname@gmail.com</string>
     <string name="loading">Loading… Please wait.</string>
     <string name="login">Please sign in</string>
+    <string name="log_out">Log Out</string>
 </resources>
