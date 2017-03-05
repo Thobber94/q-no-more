@@ -14,4 +14,6 @@
     <string name="loading">Loading… Please wait.</string>
     <string name="login">Please sign in</string>
     <string name="log_out">Log Out</string>
+    <string name="home">Home</string>
+    <string name="cd_navdrawer_image">Navigation Drawer Image</string>
 </resources>

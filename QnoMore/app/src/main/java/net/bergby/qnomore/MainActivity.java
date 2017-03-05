@@ -128,7 +128,12 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_account_circle)
+        if (id == R.id.nav_home)
+        {
+            HomeFragment homeFragment = new HomeFragment();
+            fragmentTransaction.replace(R.id.content_main, homeFragment);
+        }
+        else if (id == R.id.nav_account_circle)
         {
             Log.i("Info", "Account clicked");
             // Fragment handling
@@ -136,12 +141,9 @@ public class MainActivity extends AppCompatActivity
 
             fragmentTransaction.replace(R.id.content_main, editProfileFragment);
         }
-
         else if (id == R.id.nav_share)
         {
             Log.i("Info", "Share clicked");
-            Fragment2 fragment2 = new Fragment2();
-            fragmentTransaction.replace(R.id.content_main, fragment2);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -14,4 +14,15 @@
         tools:showIn="@layout/app_bar_main"
         tools:context="net.bergby.qnomore.MainActivity">
 
+    <TextView
+            android:text="Welcome to Q no More!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/textView2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+            android:fontFamily="serif"
+            android:textSize="30sp"
+            android:visibility="invisible"/>
 </RelativeLayout>
