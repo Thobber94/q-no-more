@@ -1,4 +1,4 @@
-package net.bergby.qnomore;
+package net.bergby.qnomore.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import net.bergby.qnomore.LoginActivity;
+import net.bergby.qnomore.R;
 
 /**
  * Created by thomas on 04-Mar-17.

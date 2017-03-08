@@ -22,6 +22,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
+import net.bergby.qnomore.fragments.EditProfileFragment;
+import net.bergby.qnomore.fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener
@@ -77,6 +79,16 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Runs the "Home" fragment
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        HomeFragment homeFragment = new HomeFragment();
+        fragmentTransaction.replace(R.id.content_main, homeFragment);
+        fragmentTransaction.commit();
+
+        // Selects the "Home" navigation-drawer item
+        navigationView.setCheckedItem(R.id.nav_home);
 
     }
 
