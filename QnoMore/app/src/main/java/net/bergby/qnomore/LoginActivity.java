@@ -130,13 +130,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onStart();
 
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        //if (opr.isDone())
-        //{
+        if (opr.isDone())
+        {
             Log.d(TAG, "Got cached sign-in");
-            //GoogleSignInResult result = opr.get();
-            //handleSignInResult(result);
-        //}
-        //else {
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        }
+        else
+            {
 
             showProgressDialog();
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
@@ -146,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     handleSignInResult(googleSignInResult);
                 }
             });
-       // }
+        }
     }
 
 
@@ -185,6 +186,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             intent.putExtra(nav_email, nav_email);
             intent.putExtra(nav_userImage, nav_userImage);
             startActivity(intent);
+            finish();
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        moveTaskToBack(true);
     }
 }
