@@ -21,6 +21,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drinks">Drinks</string>
     <string name="food">Food</string>
+    <string name="warm">Warm</string>
+    <string name="cold">Cold</string>
     <string name="drinks_button">Drinks button</string>
     <string name="food_button">Food button</string>
+    <string name="cold_button">Cold button</string>
+    <string name="warm_button">Warm button</string>
 </resources>
