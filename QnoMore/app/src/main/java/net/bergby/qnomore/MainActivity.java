@@ -23,6 +23,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 import net.bergby.qnomore.fragments.EditProfileFragment;
+import net.bergby.qnomore.fragments.FoodDrinkFragment;
 import net.bergby.qnomore.fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -62,12 +63,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startPurchase();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -75,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Runs the "Home" fragment
@@ -89,6 +84,26 @@ public class MainActivity extends AppCompatActivity
         // Selects the "Home" navigation-drawer item
         navigationView.setCheckedItem(R.id.nav_home);
 
+        // Listener for the fab button
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startPurchase();
+                navigationView.setCheckedItem(R.id.menu_none);
+            }
+        });
+
+    }
+
+    private void startPurchase()
+    {
+        // Fragments
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        FoodDrinkFragment foodDrinkFragment = new FoodDrinkFragment();
+        fragmentTransaction.replace(R.id.content_main, foodDrinkFragment);
+        fragmentTransaction.commit();
     }
 
     @Override
