@@ -1,5 +1,6 @@
 package net.bergby.qnomore;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import net.bergby.qnomore.fragments.EditProfileFragment;
 import net.bergby.qnomore.fragments.FoodDrinkFragment;
 import net.bergby.qnomore.fragments.HomeFragment;
+import net.bergby.qnomore.fragments.WarmColdFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         HomeFragment homeFragment = new HomeFragment();
-        fragmentTransaction.replace(R.id.content_main, homeFragment);
+        fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
         fragmentTransaction.commit();
 
         // Selects the "Home" navigation-drawer item
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         FoodDrinkFragment foodDrinkFragment = new FoodDrinkFragment();
-        fragmentTransaction.replace(R.id.content_main, foodDrinkFragment);
+        fragmentTransaction.replace(R.id.content_main, foodDrinkFragment, "FIRST");
 
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -111,10 +113,27 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.content_main);
+
+        int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
             drawer.closeDrawer(GravityCompat.START);
+        }
+        // If it is anything in the backstack
+        else if (backStackEntryCount == 0)
+        {
+            // If the current fragment don't got the tag "first", go back
+            if (!"FIRST".equals(currentFragment.getTag()))
+            {
+                getFragmentManager().popBackStack();
+            }
+            else
+            {
+                Log.i("Message", "On FIRST fragment");
+            }
         }
     }
 
@@ -156,7 +175,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home)
         {
             HomeFragment homeFragment = new HomeFragment();
-            fragmentTransaction.replace(R.id.content_main, homeFragment);
+            fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
             if (findViewById(R.id.fab).getVisibility() == View.GONE)
             {
                 findViewById(R.id.fab).setVisibility(View.VISIBLE);
@@ -192,6 +211,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFoodDrinkButtonSelected(int button)
     {
+        // Fragments
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         /*
         Button 1: Drinks
         Button 2: Food
@@ -199,14 +222,20 @@ public class MainActivity extends AppCompatActivity
         if (button == 1)
         {
             Log.d("Button", "Drinks");
+            WarmColdFragment warmColdFragment = new WarmColdFragment();
+            fragmentTransaction.replace(R.id.content_main, warmColdFragment, "SECOND");
         }
         else if (button == 2)
         {
             Log.d("Button", "Food");
+            WarmColdFragment warmColdFragment = new WarmColdFragment();
+            fragmentTransaction.replace(R.id.content_main, warmColdFragment, "SECOND");
         }
         else
         {
             Log.e("Error", "An error has occurred");
         }
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }
