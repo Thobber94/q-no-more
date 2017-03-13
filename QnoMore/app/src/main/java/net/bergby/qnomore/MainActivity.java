@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
         else if (backStackEntryCount == 0)
         {
             // If the current fragment don't got the tag "first", go back
-            if (!"FIRST".equals(currentFragment.getTag()))
+            if (!"LOCKED".equals(currentFragment.getTag()))
             {
                 getFragmentManager().popBackStack();
             }
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home)
         {
             HomeFragment homeFragment = new HomeFragment();
-            fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
+            fragmentTransaction.replace(R.id.content_main, homeFragment, "LOCKED");
             if (findViewById(R.id.fab).getVisibility() == View.GONE)
             {
                 findViewById(R.id.fab).setVisibility(View.VISIBLE);
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity
             // Fragment handling
             EditProfileFragment editProfileFragment = new EditProfileFragment();
 
-            fragmentTransaction.replace(R.id.content_main, editProfileFragment);
+            fragmentTransaction.replace(R.id.content_main, editProfileFragment, "LOCKED");
         }
         else if (id == R.id.nav_share)
         {
