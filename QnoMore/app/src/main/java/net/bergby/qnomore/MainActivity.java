@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,10 +22,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 import net.bergby.qnomore.fragments.EditProfileFragment;
+import net.bergby.qnomore.fragments.FoodDrinkFragment;
 import net.bergby.qnomore.fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener
 {
 
     @Override
@@ -61,14 +61,7 @@ public class MainActivity extends AppCompatActivity
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -76,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Runs the "Home" fragment
@@ -90,6 +83,29 @@ public class MainActivity extends AppCompatActivity
         // Selects the "Home" navigation-drawer item
         navigationView.setCheckedItem(R.id.nav_home);
 
+        // Listener for the fab button
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startPurchase();
+                fab.setVisibility(View.GONE);
+                navigationView.setCheckedItem(R.id.menu_none);
+            }
+        });
+
+    }
+
+    private void startPurchase()
+    {
+        // Fragments
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        FoodDrinkFragment foodDrinkFragment = new FoodDrinkFragment();
+        fragmentTransaction.replace(R.id.content_main, foodDrinkFragment);
+
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -99,8 +115,6 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
     }
 
@@ -143,6 +157,10 @@ public class MainActivity extends AppCompatActivity
         {
             HomeFragment homeFragment = new HomeFragment();
             fragmentTransaction.replace(R.id.content_main, homeFragment);
+            if (findViewById(R.id.fab).getVisibility() == View.GONE)
+            {
+                findViewById(R.id.fab).setVisibility(View.VISIBLE);
+            }
         }
         else if (id == R.id.nav_account_circle)
         {
@@ -171,4 +189,24 @@ public class MainActivity extends AppCompatActivity
         Log.e("Error", "Connection Failed");
     }
 
+    @Override
+    public void onFoodDrinkButtonSelected(int button)
+    {
+        /*
+        Button 1: Drinks
+        Button 2: Food
+         */
+        if (button == 1)
+        {
+            Log.d("Button", "Drinks");
+        }
+        else if (button == 2)
+        {
+            Log.d("Button", "Food");
+        }
+        else
+        {
+            Log.e("Error", "An error has occurred");
+        }
+    }
 }
