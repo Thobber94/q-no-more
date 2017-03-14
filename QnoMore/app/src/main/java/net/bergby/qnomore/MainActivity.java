@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         FoodDrinkFragment foodDrinkFragment = new FoodDrinkFragment();
-        fragmentTransaction.replace(R.id.content_main, foodDrinkFragment, "FIRST");
+        fragmentTransaction.replace(R.id.content_main, foodDrinkFragment, "LOCKED");
 
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity
             }
             else
             {
-                Log.i("Message", "On FIRST fragment");
+                Log.i("Message", "On LOCKED fragment");
             }
         }
     }
