@@ -181,6 +181,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     {
         if (user)
         {
+            if (mProgressDialog != null)
+            {
+                mProgressDialog.dismiss();
+            }
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(nav_user, nav_user);
             intent.putExtra(nav_email, nav_email);
@@ -195,4 +199,5 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     {
         moveTaskToBack(true);
     }
+
 }
