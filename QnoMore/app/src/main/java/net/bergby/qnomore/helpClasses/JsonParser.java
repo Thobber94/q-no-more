@@ -64,29 +64,26 @@ public class JsonParser extends ArrayList<String>
             sellsWarm = seller.optInt("warm");
             sellsCold = seller.optInt("cold");
 
-            String restaurant_names = mJsonObject.optString("restaurant_name");
+            String restaurant_names = null;
 
             if (food && sellsFood != 0)
             {
-                if (warm && sellsWarm != 0)
+                if ((warm && sellsWarm != 0) || cold && sellsCold != 0)
                 {
-                    restaurantNames.add(restaurant_names);
-                }
-                else if (cold && sellsCold != 0)
-                {
-                    restaurantNames.add(restaurant_names);
+                    restaurant_names = mJsonObject.optString("restaurant_name");
                 }
             }
             else if (drink && sellsDrinks != 0)
             {
-                if (warm && sellsWarm != 0)
+                if ((warm && sellsWarm != 0) || (cold && sellsCold != 0))
                 {
-                    restaurantNames.add(restaurant_names);
+                    restaurant_names = mJsonObject.optString("restaurant_name");
                 }
-                else if (cold && sellsCold != 0)
-                {
-                    restaurantNames.add(restaurant_names);
-                }
+            }
+
+            if (restaurant_names != null)
+            {
+                restaurantNames.add(restaurant_names);
             }
             else
             {
