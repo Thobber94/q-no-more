@@ -4,8 +4,10 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +28,8 @@ import net.bergby.qnomore.fragments.EditProfileFragment;
 import net.bergby.qnomore.fragments.FoodDrinkFragment;
 import net.bergby.qnomore.fragments.HomeFragment;
 import net.bergby.qnomore.fragments.WarmColdFragment;
+import net.bergby.qnomore.helpClasses.JsonParser;
+import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
@@ -245,8 +249,9 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public void onHotColdButtonSelected(int button)
+    public void onHotColdButtonSelected(int button) throws JSONException
     {
         // Fragments
         FragmentManager fragmentManager = getFragmentManager();
@@ -268,5 +273,11 @@ public class MainActivity extends AppCompatActivity
                 Log.d("Button", "Cold " + cold);
                 break;
         }
+
+        JsonParser jsonParser = new JsonParser(this, "jsonFile.json", warm, cold, food, drinks);
+        System.out.println(jsonParser.getRestaurantNames());
+
     }
+
+
 }
