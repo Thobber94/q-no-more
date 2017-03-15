@@ -28,8 +28,14 @@ import net.bergby.qnomore.fragments.HomeFragment;
 import net.bergby.qnomore.fragments.WarmColdFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
+        WarmColdFragment.HotColdButtonChosenListener
 {
+    // GLOBAL VARIABLES
+    private int food = 0;
+    private int drinks = 0;
+    private int warm = 0;
+    private int cold = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -214,28 +220,53 @@ public class MainActivity extends AppCompatActivity
         // Fragments
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
+        WarmColdFragment warmColdFragment;
         /*
-        Button 1: Drinks
-        Button 2: Food
+        Button = 1: Drinks
+        Button = 2: Food
          */
-        if (button == 1)
+        switch (button)
         {
-            Log.d("Button", "Drinks");
-            WarmColdFragment warmColdFragment = new WarmColdFragment();
-            fragmentTransaction.replace(R.id.content_main, warmColdFragment, "SECOND");
+            case 1:
+                drinks = 1;
+                Log.d("Button", "Drinks " + drinks);
+                warmColdFragment = new WarmColdFragment();
+                fragmentTransaction.replace(R.id.content_main, warmColdFragment, "SECOND");
+                break;
+            case 2:
+                food = 1;
+                Log.d("Button", "Food " + food);
+                warmColdFragment = new WarmColdFragment();
+                fragmentTransaction.replace(R.id.content_main, warmColdFragment, "SECOND");
+                break;
         }
-        else if (button == 2)
-        {
-            Log.d("Button", "Food");
-            WarmColdFragment warmColdFragment = new WarmColdFragment();
-            fragmentTransaction.replace(R.id.content_main, warmColdFragment, "SECOND");
-        }
-        else
-        {
-            Log.e("Error", "An error has occurred");
-        }
+
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onHotColdButtonSelected(int button)
+    {
+        // Fragments
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //FRAGMENT HERE
+
+        /*
+        Button = 3: Warm
+        Button = 4: Cold
+         */
+        switch (button)
+        {
+            case 3:
+                warm = 1;
+                Log.d("Button", "Warm " + warm);
+                break;
+            case 4:
+                cold = 1;
+                Log.d("Button", "Cold " + cold);
+                break;
+        }
     }
 }

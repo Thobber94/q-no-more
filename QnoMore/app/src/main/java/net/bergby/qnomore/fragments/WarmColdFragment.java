@@ -2,8 +2,8 @@ package net.bergby.qnomore.fragments;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +27,21 @@ public class WarmColdFragment extends Fragment implements View.OnClickListener
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+
+        try
+        {
+            mCallback = (HotColdButtonChosenListener) context;
+        }
+        catch (ClassCastException e)
+        {
+            throw new ClassCastException(context.toString()
+                    + " must implement HotColdButtonChosenListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +68,14 @@ public class WarmColdFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view)
     {
-        Log.d("Button", "Clicked!");
+        switch (view.getId())
+        {
+            case R.id.imageButtonCold:
+                mCallback.onHotColdButtonSelected(4);
+                break;
+            case R.id.imageButtonWarm:
+                mCallback.onHotColdButtonSelected(3);
+        }
     }
 
 }
