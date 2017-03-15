@@ -24,22 +24,21 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
-import net.bergby.qnomore.fragments.EditProfileFragment;
-import net.bergby.qnomore.fragments.FoodDrinkFragment;
-import net.bergby.qnomore.fragments.HomeFragment;
-import net.bergby.qnomore.fragments.WarmColdFragment;
+import net.bergby.qnomore.fragments.*;
 import net.bergby.qnomore.helpClasses.JsonParser;
 import org.json.JSONException;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
         WarmColdFragment.HotColdButtonChosenListener
 {
     // GLOBAL VARIABLES
-    private int food = 0;
-    private int drinks = 0;
-    private int warm = 0;
-    private int cold = 0;
+    private boolean food;
+    private boolean drinks;
+    private boolean warm;
+    private boolean cold;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -65,6 +64,11 @@ public class MainActivity extends AppCompatActivity
         Picasso.with(this)
                 .load(image)
                 .into(nav_userImage);
+
+        food = false;
+        drinks = false;
+        warm = false;
+        cold = false;
 
         initSidebar();
     }
@@ -229,17 +233,19 @@ public class MainActivity extends AppCompatActivity
         Button = 1: Drinks
         Button = 2: Food
          */
+
+        drinks = false;
+        food = false;
+
         switch (button)
         {
             case 1:
-                drinks = 1;
-                Log.d("Button", "Drinks " + drinks);
+                drinks = true;
                 warmColdFragment = new WarmColdFragment();
                 fragmentTransaction.replace(R.id.content_main, warmColdFragment, "SECOND");
                 break;
             case 2:
-                food = 1;
-                Log.d("Button", "Food " + food);
+                food = true;
                 warmColdFragment = new WarmColdFragment();
                 fragmentTransaction.replace(R.id.content_main, warmColdFragment, "SECOND");
                 break;
@@ -257,27 +263,43 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //FRAGMENT HERE
+        RestaurantSelector restaurantSelector = new RestaurantSelector();
 
+        JsonParser jsonParser;
+        ArrayList<String> restaurantList;
+        Bundle bundle;
         /*
         Button = 3: Warm
         Button = 4: Cold
          */
+        warm = false;
+        cold = false;
+
         switch (button)
         {
             case 3:
-                warm = 1;
-                Log.d("Button", "Warm " + warm);
+                warm = true;
+                jsonParser = new JsonParser(this, "jsonFile.json", true, false, food, drinks);
+                restaurantList = jsonParser.getRestaurantNames();
+                bundle = new Bundle();
+                bundle.putStringArrayList("restaurantList", restaurantList);
+                restaurantSelector.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.content_main, restaurantSelector, "SECOND");
                 break;
             case 4:
-                cold = 1;
-                Log.d("Button", "Cold " + cold);
+                cold = true;
+                jsonParser = new JsonParser(this, "jsonFile.json", false, true, food, drinks);
+                restaurantList = jsonParser.getRestaurantNames();
+                bundle = new Bundle();
+                bundle.putStringArrayList("restaurantList", restaurantList);
+                restaurantSelector.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.content_main, restaurantSelector, "SECOND");
                 break;
         }
 
-        JsonParser jsonParser = new JsonParser(this, "jsonFile.json", warm, cold, food, drinks);
-        System.out.println(jsonParser.getRestaurantNames());
-
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
-
-
 }

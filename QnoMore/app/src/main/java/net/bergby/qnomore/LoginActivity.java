@@ -60,7 +60,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
-
     }
 
     private void updateUI(boolean signedIn)

@@ -1,6 +1,7 @@
 package net.bergby.qnomore.helpClasses;
 
 import android.content.Context;
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,13 +19,13 @@ public class JsonParser extends ArrayList<String>
 {
     private static Context mContext;
     private ArrayList<String> restaurantNames = new ArrayList<>();
-    private int warm;
-    private int cold;
-    private int food;
-    private int drink;
+    private boolean warm;
+    private boolean cold;
+    private boolean food;
+    private boolean drink;
 
 
-    public JsonParser(Context context, String fileNameJson, int warm, int cold, int food, int drink) throws JSONException
+    public JsonParser(Context context, String fileNameJson, boolean warm, boolean cold, boolean food, boolean drink) throws JSONException
     {
         String fileName = fileNameJson;
         mContext = context;
@@ -51,18 +52,45 @@ public class JsonParser extends ArrayList<String>
         {
             JSONObject mJsonObject = jsonArray.getJSONObject(i);
 
-            JSONObject menu = (JSONObject) mJsonObject.get("seller");
+            JSONObject seller = (JSONObject) mJsonObject.get("seller");
 
-            int menuItems = menu.optInt("food");
+            int sellsFood;
+            int sellsDrinks;
+            int sellsWarm;
+            int sellsCold;
 
-            if (menuItems == 1 && food == 1)
+            sellsDrinks = seller.optInt("drinks");
+            sellsFood = seller.optInt("food");
+            sellsWarm = seller.optInt("warm");
+            sellsCold = seller.optInt("cold");
+
+            String restaurant_names = mJsonObject.optString("restaurant_name");
+
+            if (food && sellsFood != 0)
             {
-                String restaurant_names = mJsonObject.optString("restaurant_name");
-                restaurantNames.add(restaurant_names);
+                if (warm && sellsWarm != 0)
+                {
+                    restaurantNames.add(restaurant_names);
+                }
+                else if (cold && sellsCold != 0)
+                {
+                    restaurantNames.add(restaurant_names);
+                }
             }
-            else if (menuItems == 0 && food == 0)
+            else if (drink && sellsDrinks != 0)
             {
-                System.out.println("Does not sell food");
+                if (warm && sellsWarm != 0)
+                {
+                    restaurantNames.add(restaurant_names);
+                }
+                else if (cold && sellsCold != 0)
+                {
+                    restaurantNames.add(restaurant_names);
+                }
+            }
+            else
+            {
+                Log.e("Error", "No options valid");
             }
         }
     }
