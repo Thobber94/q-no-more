@@ -92,7 +92,6 @@ public class JsonParser extends ArrayList<String>
         }
     }
 
-
     // Reads file, and returns the JSON as string, sends it to getJsonValue method
     private static String readFile(String fileName)
     {

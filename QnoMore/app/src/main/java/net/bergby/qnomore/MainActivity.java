@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
-        WarmColdFragment.HotColdButtonChosenListener
+        WarmColdFragment.HotColdButtonChosenListener, RestaurantSelector.RestaurantItemClickedListener
 {
     // GLOBAL VARIABLES
     private boolean food;
@@ -301,5 +301,18 @@ public class MainActivity extends AppCompatActivity
 
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onRestaurantItemClicked(String restaurant)
+    {
+        switch (restaurant)
+        {
+            case "Peppes Pizza":
+                System.out.println("Peppes pizza clicked");
+                break;
+            default:
+                System.out.println(restaurant);
+        }
     }
 }
