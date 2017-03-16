@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             tools:context="net.bergby.qnomore.fragments.WarmColdFragment"
+             android:id="@+id/warmColdFragment">
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/image_warm"
+            android:layout_marginLeft="45dp"
+            android:layout_marginStart="45dp"
+            android:id="@+id/imageButtonWarm"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:visibility="visible"
+            android:contentDescription="@string/warm_button"/>
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/image_cold"
+            android:id="@+id/imageButtonCold"
+            android:layout_marginRight="63dp"
+            android:layout_marginEnd="63dp"
+            android:visibility="visible"
+            android:layout_alignTop="@+id/imageButtonWarm"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/cold_button"/>
+
+    <TextView
+            android:text="@string/warm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewDrinks"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_below="@+id/imageButtonWarm"
+            android:layout_alignRight="@+id/imageButtonWarm"
+            android:layout_alignEnd="@+id/imageButtonWarm"/>
+
+    <TextView
+            android:text="@string/cold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewFood"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@+id/imageButtonCold"
+            android:layout_alignRight="@+id/imageButtonCold"
+            android:layout_alignEnd="@+id/imageButtonCold"/>
+
+</RelativeLayout>
