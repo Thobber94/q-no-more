@@ -239,4 +239,6 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
+release_alpha
+
 # End of https://www.gitignore.io/api/android,intellij,intellij+iml,linux,sublimetext,git,java,maven,gradle
