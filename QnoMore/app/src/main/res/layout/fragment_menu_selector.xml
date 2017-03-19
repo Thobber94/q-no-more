@@ -3,14 +3,13 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="net.bergby.qnomore.fragments.RestaurantSelectorFragment">
+        tools:context="net.bergby.qnomore.fragments.MenuSelectorFragment">
 
     <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/restaurantSelectorListView"
+            android:id="@+id/menuSelectorListView"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            />
+            android:layout_centerVertical="true" />
 
 </RelativeLayout>

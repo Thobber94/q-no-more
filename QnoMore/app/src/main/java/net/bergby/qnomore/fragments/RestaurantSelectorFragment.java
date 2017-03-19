@@ -13,10 +13,8 @@ import net.bergby.qnomore.R;
 
 import java.util.ArrayList;
 
-public class RestaurantSelector extends Fragment
+public class RestaurantSelectorFragment extends Fragment
 {
-    private View view;
-    private ListView listView;
     private ArrayList<String> restaurantList = new ArrayList<>();
     private String itemClicked;
     private RestaurantItemClickedListener mCallback;
@@ -26,7 +24,7 @@ public class RestaurantSelector extends Fragment
         void onRestaurantItemClicked(String restaurant);
     }
 
-    public RestaurantSelector()
+    public RestaurantSelectorFragment()
     {
         // Required empty public constructor
     }
@@ -35,11 +33,11 @@ public class RestaurantSelector extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        view = inflater.inflate(R.layout.fragment_restaurant_selector, container, false);
+        View view = inflater.inflate(R.layout.fragment_restaurant_selector, container, false);
 
         restaurantList = getArguments().getStringArrayList("restaurantList");
 
-        listView = (ListView) view.findViewById(R.id.restaurantSelectorListView);
+        ListView listView = (ListView) view.findViewById(R.id.restaurantSelectorListView);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity().getApplicationContext(),

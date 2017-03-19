@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
-        WarmColdFragment.HotColdButtonChosenListener, RestaurantSelector.RestaurantItemClickedListener
+        WarmColdFragment.HotColdButtonChosenListener, RestaurantSelectorFragment.RestaurantItemClickedListener
 {
     // GLOBAL VARIABLES
     private boolean food;
@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //FRAGMENT HERE
-        RestaurantSelector restaurantSelector = new RestaurantSelector();
+        RestaurantSelectorFragment restaurantSelectorFragment = new RestaurantSelectorFragment();
 
         JsonParser jsonParser;
         ArrayList<String> restaurantList;
@@ -283,9 +283,9 @@ public class MainActivity extends AppCompatActivity
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
                 bundle.putStringArrayList("restaurantList", restaurantList);
-                restaurantSelector.setArguments(bundle);
+                restaurantSelectorFragment.setArguments(bundle);
 
-                fragmentTransaction.replace(R.id.content_main, restaurantSelector, "SECOND");
+                fragmentTransaction.replace(R.id.content_main, restaurantSelectorFragment, "SECOND");
                 break;
             case 4:
                 cold = true;
@@ -293,9 +293,9 @@ public class MainActivity extends AppCompatActivity
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
                 bundle.putStringArrayList("restaurantList", restaurantList);
-                restaurantSelector.setArguments(bundle);
+                restaurantSelectorFragment.setArguments(bundle);
 
-                fragmentTransaction.replace(R.id.content_main, restaurantSelector, "SECOND");
+                fragmentTransaction.replace(R.id.content_main, restaurantSelectorFragment, "SECOND");
                 break;
         }
 
