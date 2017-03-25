@@ -1,8 +1,8 @@
 package net.bergby.qnomore.fragments;
 
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +15,10 @@ import net.bergby.qnomore.R;
 public class MenuSelectorFragment extends Fragment
 {
 
-    View view;
-
+    public interface MenuItemClickedListener
+    {
+        void onMenuItemClicked(String menuItem);
+    }
 
     public MenuSelectorFragment()
     {
@@ -28,11 +30,11 @@ public class MenuSelectorFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+        View view;
 
         view = inflater.inflate(R.layout.fragment_menu_selector, container, false);
 
         // Inflate the layout for this fragment
         return view;
     }
-
 }

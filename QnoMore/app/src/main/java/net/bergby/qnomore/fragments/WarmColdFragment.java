@@ -50,7 +50,7 @@ public class WarmColdFragment extends Fragment implements View.OnClickListener
     {
         view = inflater.inflate(R.layout.fragment_warm_cold, container, false);
         // Inflate the layout for this fragment
-        ImageButton coldButton = (ImageButton) view.findViewById(R.id.imageButtonCold);
+        ImageButton coldButton = (ImageButton) view.findViewById(R.id.imageButtonFood);
         ImageButton warmButton = (ImageButton) view.findViewById(R.id.imageButtonWarm);
         coldButton.setOnClickListener(this);
         warmButton.setOnClickListener(this);
@@ -71,7 +71,7 @@ public class WarmColdFragment extends Fragment implements View.OnClickListener
     {
         switch (view.getId())
         {
-            case R.id.imageButtonCold:
+            case R.id.imageButtonFood:
                 try
                 {
                     mCallback.onHotColdButtonSelected(4);

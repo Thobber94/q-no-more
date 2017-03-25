@@ -43,15 +43,15 @@
             android:textColor="@android:color/black"
             android:layout_marginRight="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@+id/imageButtonCold"
-            android:layout_alignRight="@+id/imageButtonCold"
-            android:layout_alignEnd="@+id/imageButtonCold"/>
+            android:layout_below="@+id/imageButtonFood"
+            android:layout_alignRight="@+id/imageButtonFood"
+            android:layout_alignEnd="@+id/imageButtonFood"/>
 
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/image_food"
-            android:id="@+id/imageButtonCold"
+            android:id="@+id/imageButtonFood"
             android:layout_marginRight="65dp"
             android:layout_marginEnd="65dp"
             android:visibility="visible"

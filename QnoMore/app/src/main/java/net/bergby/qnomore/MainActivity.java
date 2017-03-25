@@ -306,13 +306,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRestaurantItemClicked(String restaurant)
     {
-        switch (restaurant)
-        {
-            case "Peppes Pizza":
-                System.out.println("Peppes pizza clicked");
-                break;
-            default:
-                System.out.println(restaurant);
-        }
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        MenuSelectorFragment menuSelectorFragment = new MenuSelectorFragment();
+        fragmentTransaction.replace(R.id.content_main, menuSelectorFragment, "SECOND");
+
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

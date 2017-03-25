@@ -173,7 +173,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
     {
-
+        Log.e("Network", "No network found");
     }
 
     private void onUserAuthenticated(boolean user)

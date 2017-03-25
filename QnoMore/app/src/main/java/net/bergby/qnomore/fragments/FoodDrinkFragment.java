@@ -49,7 +49,7 @@ public class FoodDrinkFragment extends Fragment implements View.OnClickListener
         view = inflater.inflate(R.layout.fragment_food_drink, container, false);
 
         ImageButton drinksButton = (ImageButton) view.findViewById(R.id.imageButtonDrink);
-        ImageButton foodButton = (ImageButton) view.findViewById(R.id.imageButtonCold);
+        ImageButton foodButton = (ImageButton) view.findViewById(R.id.imageButtonFood);
         foodButton.setOnClickListener(this);
         drinksButton.setOnClickListener(this);
 
@@ -70,7 +70,7 @@ public class FoodDrinkFragment extends Fragment implements View.OnClickListener
     {
         switch (view.getId())
         {
-            case R.id.imageButtonCold:
+            case R.id.imageButtonFood:
                 mCallback.onFoodDrinkButtonSelected(2);
                 break;
             case R.id.imageButtonDrink:
