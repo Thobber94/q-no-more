@@ -10,14 +10,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import net.bergby.qnomore.R;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class RestaurantSelectorFragment extends Fragment
 {
-    private ArrayList<String> restaurantList = new ArrayList<>();
+    private ArrayList<String> restaurantList;
     private String itemClicked;
     private RestaurantItemClickedListener mCallback;
+    private ArrayList<String> restaurantListNames = new ArrayList<>();
+    public int counter = 0;
 
     public interface RestaurantItemClickedListener
     {
@@ -35,14 +39,29 @@ public class RestaurantSelectorFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_restaurant_selector, container, false);
 
-        restaurantList = getArguments().getStringArrayList("restaurantList");
+        if (restaurantListNames.isEmpty())
+        {
+            restaurantList = getArguments().getStringArrayList("restaurantList");
+
+            for (String s : restaurantList)
+            {
+                try
+                {
+                    JSONObject jsonObject = new JSONObject(s);
+                    restaurantListNames.add(jsonObject.optString("restaurant_name"));
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         ListView listView = (ListView) view.findViewById(R.id.restaurantSelectorListView);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity().getApplicationContext(),
                 R.layout.restaurant_text_view,
-                restaurantList
+                restaurantListNames
         );
 
         listView.setAdapter(arrayAdapter);
@@ -56,6 +75,7 @@ public class RestaurantSelectorFragment extends Fragment
                 mCallback.onRestaurantItemClicked(itemClicked);
             }
         });
+
 
         return view;
     }

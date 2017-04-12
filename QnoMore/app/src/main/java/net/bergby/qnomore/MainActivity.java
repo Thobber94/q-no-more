@@ -32,13 +32,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
-        WarmColdFragment.HotColdButtonChosenListener, RestaurantSelectorFragment.RestaurantItemClickedListener
+        WarmColdFragment.HotColdButtonChosenListener, RestaurantSelectorFragment.RestaurantItemClickedListener, MenuSelectorFragment.MenuItemClickedListener
 {
     // GLOBAL VARIABLES
     private boolean food;
     private boolean drinks;
     private boolean warm;
     private boolean cold;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -268,6 +269,7 @@ public class MainActivity extends AppCompatActivity
         JsonParser jsonParser;
         ArrayList<String> restaurantList;
         Bundle bundle;
+
         /*
         Button = 3: Warm
         Button = 4: Cold
@@ -306,13 +308,35 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRestaurantItemClicked(String restaurant)
     {
+
+        Bundle bundle;
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         MenuSelectorFragment menuSelectorFragment = new MenuSelectorFragment();
+
+        bundle = new Bundle();
+        bundle.putString("specificRestaurant" ,restaurant);
+        menuSelectorFragment.setArguments(bundle);
+
         fragmentTransaction.replace(R.id.content_main, menuSelectorFragment, "SECOND");
 
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onMenuItemClicked(double sum, ArrayList items)
+    {
+        if (sum != 0.0)
+        {
+            System.out.println(sum);
+            System.out.println(items);
+        }
+        else
+        {
+            Log.w("Message", "Shopping cart is empty");
+        }
     }
 }

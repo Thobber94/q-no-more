@@ -3,7 +3,7 @@
     "_id": "a1",
     "restaurant_name": "McDonalds",
     "menu": {
-      "Cheeseburger": 1,
+      "Cheeseburger": 1.5,
       "Coca Cola": 2,
       "Big Mac": 4,
       "Pepsi Max": 2
@@ -21,7 +21,8 @@
     "menu": {
       "Coca Cola": 2,
       "Pepsi Max": 2,
-      "Jupiler": 2
+      "Jupiler": 2,
+      "Fanta Orange": 2
     },
     "seller": {
       "food": 0,
@@ -36,7 +37,8 @@
     "menu": {
       "Peperoni pizza": 3,
       "Hawaii pizza": 1,
-      "Sliders": 2
+      "Biffsnadder": 4,
+      "Oreo cake": 2
     },
     "seller": {
       "food": 1,
@@ -51,7 +53,8 @@
     "menu": {
       "Peperoni pizza": 3,
       "Hawaii pizza": 1,
-      "Sliders": 2
+      "Mix": 5,
+      "The Mexican": 3
     },
     "seller": {
       "food": 1,
@@ -103,6 +106,32 @@
       "drinks": 0,
       "warm": 1,
       "cold": 0
+    }
+  },
+  {
+    "_id": "e94",
+    "restaurant_name": "Evelien's Bar",
+    "menu": {
+      "Peperoni pizza": 3.2,
+      "Mozerella pizza": 2.5,
+      "Potatomix": 2.3,
+      "Pasta carbonara": 3.4,
+      "Duvel": 2.2,
+      "Stella": 2.1,
+      "Pepsi Max": 2,
+      "1Peperoni pizza": 3.2,
+      "1Mozerella pizza": 2.5,
+      "1Potatomix": 2.3,
+      "1Pasta carbonara": 3.4,
+      "1Duvel": 2.2,
+      "1Stella": 2.1,
+      "1Pepsi Max": 2
+    },
+    "seller": {
+      "food": 1,
+      "drinks": 1,
+      "warm": 1,
+      "cold": 1
     }
   }
 ]

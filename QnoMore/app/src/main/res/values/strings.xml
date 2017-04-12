@@ -27,4 +27,5 @@
     <string name="food_button">Food button</string>
     <string name="cold_button">Cold button</string>
     <string name="warm_button">Warm button</string>
+    <string name="button_continue">Continue</string>
 </resources>

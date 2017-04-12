@@ -27,7 +27,6 @@ public class JsonParser extends ArrayList<String>
 
     public JsonParser(Context context, String fileNameJson, boolean warm, boolean cold, boolean food, boolean drink) throws JSONException
     {
-        String fileName = fileNameJson;
         mContext = context;
 
         // Sets which buttons have been pressed
@@ -37,7 +36,7 @@ public class JsonParser extends ArrayList<String>
         this.drink = drink;
 
         // Calls the method to start the process
-        getJsonValue(fileName);
+        getJsonValue(fileNameJson);
     }
 
 
@@ -70,14 +69,14 @@ public class JsonParser extends ArrayList<String>
             {
                 if ((warm && sellsWarm != 0) || cold && sellsCold != 0)
                 {
-                    restaurant_names = mJsonObject.optString("restaurant_name");
+                    restaurant_names = mJsonObject.toString();
                 }
             }
             else if (drink && sellsDrinks != 0)
             {
                 if ((warm && sellsWarm != 0) || (cold && sellsCold != 0))
                 {
-                    restaurant_names = mJsonObject.optString("restaurant_name");
+                    restaurant_names = mJsonObject.toString();
                 }
             }
 
