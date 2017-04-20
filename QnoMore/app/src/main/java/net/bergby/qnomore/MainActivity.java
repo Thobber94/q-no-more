@@ -327,17 +327,26 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onMenuItemClicked(double sum, ArrayList items)
+    public void onMenuItemClicked(double sum, ArrayList<String> items)
     {
+
+        Bundle bundle;
+
         if (sum != 0.0)
         {
-            System.out.println(sum);
-            System.out.println(items);
+            String stringSum = String.valueOf(sum);
 
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             CheckOutFragment checkOutFragment = new CheckOutFragment();
+
+            // Puts the checkout information in the bundle
+            bundle = new Bundle();
+            bundle.putString("sum", stringSum);
+            bundle.putStringArrayList("items", items);
+            checkOutFragment.setArguments(bundle);
+
             fragmentTransaction.replace(R.id.content_main, checkOutFragment, "SECOND");
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();

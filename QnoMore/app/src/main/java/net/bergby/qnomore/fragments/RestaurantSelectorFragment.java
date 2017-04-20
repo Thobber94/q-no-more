@@ -60,7 +60,7 @@ public class RestaurantSelectorFragment extends Fragment
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity().getApplicationContext(),
-                R.layout.restaurant_text_view,
+                R.layout.standard_text_view,
                 restaurantListNames
         );
 

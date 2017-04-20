@@ -29,7 +29,7 @@ public class MenuSelectorFragment extends Fragment implements View.OnClickListen
     private JSONObject restaurantObject;
     private MenuItemClickedListener mCallback;
     private double sumFroMAdapter;
-    private ArrayList itemList = new ArrayList();
+    private ArrayList<String> itemList = new ArrayList<>();
 
     public MenuSelectorFragment()
     {
@@ -39,7 +39,7 @@ public class MenuSelectorFragment extends Fragment implements View.OnClickListen
     private NewItemAdapter.NewItemAdapterInterface listener = new NewItemAdapter.NewItemAdapterInterface()
     {
         @Override
-        public void onClick(Double sum, ArrayList item)
+        public void onClick(Double sum, ArrayList<String> item)
         {
             sumFroMAdapter = sum;
             itemList = item;
@@ -48,7 +48,7 @@ public class MenuSelectorFragment extends Fragment implements View.OnClickListen
 
     public interface MenuItemClickedListener
     {
-        void onMenuItemClicked(double sum, ArrayList items);
+        void onMenuItemClicked(double sum, ArrayList<String> items);
     }
 
     @Override
