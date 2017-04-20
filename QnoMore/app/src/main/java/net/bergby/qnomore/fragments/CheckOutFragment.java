@@ -79,9 +79,6 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
 
         sumTextView.setText(getString(R.string.euroSymbol, stringSum));
 
-        // Disables clicks on the listview
-        checkOutListView.setOnItemClickListener(null);
-
         // Inflate the layout for this fragment
         return view;
     }
