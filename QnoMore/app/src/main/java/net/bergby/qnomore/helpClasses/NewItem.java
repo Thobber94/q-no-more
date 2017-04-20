@@ -13,6 +13,7 @@ public class NewItem
     private double price;
     private int quantity;
     private double totalSum;
+    public int the_quantity;
 
     public NewItem(int imageId, String title, JSONObject menu, int quantity, double totalSum, double price)
     {

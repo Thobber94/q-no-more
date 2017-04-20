@@ -9,7 +9,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#906B41"
-            android:text="Bottom Text"
+            android:text="@string/price_currency"
             android:layout_alignParentTop="true"
             android:layout_marginTop="49dp"
             android:paddingLeft="10dp"
@@ -28,7 +28,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:padding="2dp"
-                android:text="Top text"
+                android:text="@string/title_item"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black"
                 android:layout_marginLeft="10dp"/>

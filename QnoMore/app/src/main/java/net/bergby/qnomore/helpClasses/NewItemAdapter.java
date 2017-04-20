@@ -37,6 +37,7 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
         super(context, resourceId, items);
         this.context = context;
         this.adapterInterface = adapterInterface;
+        //this.quantityArray = quantityArray;
     }
 
     private class ViewHolder
@@ -48,7 +49,7 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
         TextView quantity;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(final int position, View convertView, ViewGroup parent)
     {
 
         final ViewHolder holder;
@@ -66,7 +67,6 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
             holder.addItem = (Button) convertView.findViewById(R.id.button1);
             holder.subItem = (Button) convertView.findViewById(R.id.button2);
             holder.quantity = (TextView) convertView.findViewById(R.id.quantity_text_view);
-            convertView.setTag(holder);
         }
 
         else
@@ -74,11 +74,13 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
             holder = (ViewHolder) convertView.getTag();
         }
 
+        convertView.setTag(holder);
         holder.textPrice.setText(currency + String.valueOf(newItem.getPrice()));
         holder.textTitle.setText(newItem.getTitle());
         //holder.imageView.setImageResource(newItem.getImageId());
         holder.addItem.setTag(position);
         holder.subItem.setTag(position);
+        holder.quantity.setTag(position);
         final int[] counter = {0};
         holder.addItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +108,6 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
                 }
             }
         });
-
 
         return convertView;
     }

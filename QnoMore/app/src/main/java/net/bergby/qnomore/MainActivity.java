@@ -333,6 +333,14 @@ public class MainActivity extends AppCompatActivity
         {
             System.out.println(sum);
             System.out.println(items);
+
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            CheckOutFragment checkOutFragment = new CheckOutFragment();
+            fragmentTransaction.replace(R.id.content_main, checkOutFragment, "SECOND");
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
         else
         {

@@ -71,6 +71,7 @@ public class MenuSelectorFragment extends Fragment implements View.OnClickListen
             e.printStackTrace();
         }
 
+        System.out.println(restaurantObject.optString("_id"));
 
         JSONObject jsonMenu = null;
         try

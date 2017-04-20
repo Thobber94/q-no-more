@@ -28,4 +28,7 @@
     <string name="cold_button">Cold button</string>
     <string name="warm_button">Warm button</string>
     <string name="button_continue">Continue</string>
+    <string name="price_currency"><![CDATA[Price & Currency]]></string>
+    <string name="title_item">Title / Item</string>
+    <string name="button_back">Back</string>
 </resources>
