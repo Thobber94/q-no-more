@@ -59,8 +59,6 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
         sum = round(sum, 2);
         itemArrayRaw = getArguments().getStringArrayList("items");
         stringSum = String.valueOf(sum);
-        System.out.println("Sum in checkout fragment: " + sum);
-        System.out.println("Arraylist in fragment " + itemArrayRaw);
 
         if (itemArray.isEmpty())
         {
@@ -80,6 +78,9 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
         checkOutListView.setAdapter(arrayAdapter);
 
         sumTextView.setText(getString(R.string.euroSymbol, stringSum));
+
+        // Disables clicks on the listview
+        checkOutListView.setOnItemClickListener(null);
 
         // Inflate the layout for this fragment
         return view;
