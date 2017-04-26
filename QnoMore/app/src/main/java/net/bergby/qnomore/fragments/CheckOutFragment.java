@@ -2,6 +2,7 @@ package net.bergby.qnomore.fragments;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,20 +20,9 @@ import java.util.*;
 public class CheckOutFragment extends Fragment implements View.OnClickListener
 {
 
-    @Override
-    public void onClick(View view)
-    {
-        switch (view.getId())
-        {
-            case R.id.backButton:
-                getFragmentManager().popBackStackImmediate();
-                break;
-        }
-    }
-
     public interface CheckOutFragmentInterface
     {
-        void onCheckOutFragmentAction();
+        void onCheckOutFragmentAction(ArrayList<String> items, double sum);
     }
 
     public CheckOutFragment()
@@ -46,6 +36,7 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
     //String currency = "\u20ac";
     private String stringSum;
     private ArrayList<String> itemArraySorted = new ArrayList<>();
+    private double sum;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +44,7 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
     {
         View view = inflater.inflate(R.layout.fragment_check_out, container, false);
 
-        double sum = Double.parseDouble(getArguments().getString("sum"));
+        sum = Double.parseDouble(getArguments().getString("sum"));
         sum = round(sum, 2);
         itemArrayRaw = getArguments().getStringArrayList("items");
         stringSum = String.valueOf(sum);
@@ -72,8 +63,10 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
 
         ListView checkOutListView = (ListView) view.findViewById(R.id.checkoutListView);
         Button backButton = (Button) view.findViewById(R.id.backButton);
+        Button confirmButton = (Button) view.findViewById(R.id.continue_button);
         TextView sumTextView = (TextView) view.findViewById(R.id.checkoutSum);
         backButton.setOnClickListener(this);
+        confirmButton.setOnClickListener(this);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity().getApplicationContext(),
@@ -81,8 +74,6 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
                 itemArraySorted
         );
         checkOutListView.setAdapter(arrayAdapter);
-
-        System.out.println(itemArray);
 
         sumTextView.setText(getString(R.string.euroSymbol, stringSum));
 
@@ -99,6 +90,34 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
         return bd.doubleValue();
     }
 
-    
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+
+        try
+        {
+            mCallback = (CheckOutFragmentInterface) context;
+        }
+        catch (ClassCastException e)
+        {
+            throw new ClassCastException(context.toString()
+                    + " must implement CheckOutFragmentInterface");
+        }
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId())
+        {
+            case R.id.backButton:
+                getFragmentManager().popBackStackImmediate();
+                break;
+            case R.id.continue_button:
+                mCallback.onCheckOutFragmentAction(itemArraySorted, sum);
+                break;
+        }
+    }
 
 }

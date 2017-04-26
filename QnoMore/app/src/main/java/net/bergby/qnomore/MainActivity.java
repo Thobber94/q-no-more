@@ -357,9 +357,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onCheckOutFragmentAction()
-    {
 
+    @Override
+    public void onCheckOutFragmentAction(ArrayList<String> items, double sum)
+    {
+        System.out.println(items + "  " + sum);
     }
 }
