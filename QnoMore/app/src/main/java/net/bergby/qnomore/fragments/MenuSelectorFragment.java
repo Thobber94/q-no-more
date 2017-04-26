@@ -89,7 +89,7 @@ public class MenuSelectorFragment extends Fragment implements View.OnClickListen
         {
             String str_name = keys.next();
             String value = jsonMenu.optString(str_name);
-            NewItem item = new NewItem(1, str_name, jsonMenu, 1, Double.valueOf(value), Double.valueOf(value));
+            NewItem item = new NewItem(1, str_name, jsonMenu, Double.valueOf(value));
             newItems.add(item);
         }
 

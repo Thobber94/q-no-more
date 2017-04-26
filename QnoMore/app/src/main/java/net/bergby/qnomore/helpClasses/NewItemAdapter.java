@@ -29,7 +29,7 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
         void onClick(Double sum, ArrayList<String> item);
     }
 
-    NewItemAdapterInterface adapterInterface;
+    private NewItemAdapterInterface adapterInterface;
 
     public  NewItemAdapter(Context context, int resourceId,
                            List<NewItem> items, NewItemAdapterInterface adapterInterface)
@@ -81,13 +81,15 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
         holder.addItem.setTag(position);
         holder.subItem.setTag(position);
         holder.quantity.setTag(position);
-        final int[] counter = {0};
+        holder.quantity.setText(String.valueOf(newItem.getQuantity()));
+
         holder.addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int quantityFromItem = newItem.getQuantity();
                 // Adds 1 to the counter
-                counter[0] = counter[0] + 1;
-                holder.quantity.setText(String.valueOf(counter[0]));
+                newItem.setQuantity(quantityFromItem + 1);
+                holder.quantity.setText(String.valueOf(newItem.getQuantity()));
                 sum[0] += newItem.getPrice();
                 items.add(newItem.getTitle());
                 adapterInterface.onClick(sum[0], items);
@@ -97,11 +99,12 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
         holder.subItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int quantityFromItem = newItem.getQuantity();
                 // Subtract 1 from counter
-                if (counter[0] > 0)
+                if (quantityFromItem > 0)
                 {
-                    counter[0] = counter[0] - 1;
-                    holder.quantity.setText(String.valueOf(counter[0]));
+                    newItem.setQuantity(quantityFromItem - 1);
+                    holder.quantity.setText(String.valueOf(newItem.getQuantity()));
                     sum[0] -=  newItem.getPrice();
                     items.remove(newItem.getTitle());
                     adapterInterface.onClick(sum[0], items);

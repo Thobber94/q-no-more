@@ -13,15 +13,12 @@ public class NewItem
     private double price;
     private int quantity;
     private double totalSum;
-    public int the_quantity;
 
-    public NewItem(int imageId, String title, JSONObject menu, int quantity, double totalSum, double price)
+    public NewItem(int imageId, String title, JSONObject menu, double price)
     {
         this.imageId = imageId;
         this.title = title;
         this.menu = menu;
-        this.quantity = quantity;
-        this.totalSum = totalSum;
         this.price = price;
     }
 
