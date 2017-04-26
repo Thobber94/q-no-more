@@ -1,8 +1,11 @@
 package net.bergby.qnomore;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -33,6 +36,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+
+        // Clears the shared-preferences on system load.
+        PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_main);
 

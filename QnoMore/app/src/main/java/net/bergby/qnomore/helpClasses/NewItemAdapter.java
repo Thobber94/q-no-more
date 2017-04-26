@@ -22,7 +22,6 @@ import java.util.List;
 public class NewItemAdapter extends ArrayAdapter<NewItem>
 {
     private Context context;
-    private String currency = "€";
     private final double[] sum = new double[1];
     private final ArrayList<String> items = new ArrayList<>();
 
@@ -80,14 +79,29 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
         }
 
         convertView.setTag(holder);
+        String currency = "€";
+
+        int oldQuantity = preferences.getInt("quantity" + position, 0);
+
         holder.textPrice.setText(currency + String.valueOf(newItem.getPrice()));
         holder.textTitle.setText(newItem.getTitle());
-        //holder.imageView.setImageResource(newItem.getImageId());
         holder.addItem.setTag(position);
         holder.subItem.setTag(position);
         holder.quantity.setTag(position);
-        //holder.quantity.setText(String.valueOf(newItem.getQuantity()));
+
         holder.quantity.setText(String.valueOf(preferences.getInt("quantity" + position, 0)));
+        newItem.setQuantity(preferences.getInt("quantity" + position, 0));
+
+        // Updates the item array if it should be items in it
+        if (oldQuantity != 0)
+        {
+            for (int i = 0; i < oldQuantity; i++)
+            {
+                sum[0] += newItem.getPrice();
+                items.add(newItem.getTitle());
+            }
+        }
+
         holder.addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +113,6 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
                 sum[0] += newItem.getPrice();
                 items.add(newItem.getTitle());
                 adapterInterface.onClick(sum[0], items);
-
 
                 editor.putInt("quantity" + position, newItem.getQuantity()).apply();
             }
@@ -117,6 +130,8 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
                     sum[0] -=  newItem.getPrice();
                     items.remove(newItem.getTitle());
                     adapterInterface.onClick(sum[0], items);
+
+                    editor.putInt("quantity" + position, newItem.getQuantity()).apply();
                 }
             }
         });

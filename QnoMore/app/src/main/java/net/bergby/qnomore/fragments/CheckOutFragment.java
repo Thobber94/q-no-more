@@ -41,7 +41,6 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
     }
 
     private CheckOutFragmentInterface mCallback;
-    private double sum;
     private ArrayList<String> itemArrayRaw;
     private ArrayList<String> itemArray = new ArrayList<>();
     //String currency = "\u20ac";
@@ -54,7 +53,7 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
     {
         View view = inflater.inflate(R.layout.fragment_check_out, container, false);
 
-        sum = Double.parseDouble(getArguments().getString("sum"));
+        double sum = Double.parseDouble(getArguments().getString("sum"));
         sum = round(sum, 2);
         itemArrayRaw = getArguments().getStringArrayList("items");
         stringSum = String.valueOf(sum);

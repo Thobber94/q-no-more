@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
-        WarmColdFragment.HotColdButtonChosenListener, RestaurantSelectorFragment.RestaurantItemClickedListener, MenuSelectorFragment.MenuItemClickedListener
+        WarmColdFragment.HotColdButtonChosenListener, RestaurantSelectorFragment.RestaurantItemClickedListener, MenuSelectorFragment.MenuItemClickedListener, CheckOutFragment.CheckOutFragmentInterface
 {
     // GLOBAL VARIABLES
     private boolean food;
@@ -355,5 +355,11 @@ public class MainActivity extends AppCompatActivity
         {
             Log.w("Message", "Shopping cart is empty");
         }
+    }
+
+    @Override
+    public void onCheckOutFragmentAction()
+    {
+
     }
 }
