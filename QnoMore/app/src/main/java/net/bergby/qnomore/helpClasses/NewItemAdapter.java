@@ -2,6 +2,8 @@ package net.bergby.qnomore.helpClasses;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,9 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
     public View getView(final int position, View convertView, ViewGroup parent)
     {
 
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext().getApplicationContext());
+        final SharedPreferences.Editor editor = preferences.edit();
+
         final ViewHolder holder;
         final NewItem newItem = getItem(position);
 
@@ -81,18 +86,22 @@ public class NewItemAdapter extends ArrayAdapter<NewItem>
         holder.addItem.setTag(position);
         holder.subItem.setTag(position);
         holder.quantity.setTag(position);
-        holder.quantity.setText(String.valueOf(newItem.getQuantity()));
-
+        //holder.quantity.setText(String.valueOf(newItem.getQuantity()));
+        holder.quantity.setText(String.valueOf(preferences.getInt("quantity" + position, 0)));
         holder.addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int quantityFromItem = newItem.getQuantity();
+
                 // Adds 1 to the counter
                 newItem.setQuantity(quantityFromItem + 1);
                 holder.quantity.setText(String.valueOf(newItem.getQuantity()));
                 sum[0] += newItem.getPrice();
                 items.add(newItem.getTitle());
                 adapterInterface.onClick(sum[0], items);
+
+
+                editor.putInt("quantity" + position, newItem.getQuantity()).apply();
             }
         });
 

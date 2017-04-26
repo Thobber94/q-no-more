@@ -35,7 +35,7 @@
     "_id": "c3",
     "restaurant_name": "Peppes Pizza",
     "menu": {
-      "Peperoni pizza": 3,
+      "Pepperoni pizza": 3,
       "Hawaii pizza": 1,
       "Biffsnadder": 4,
       "Oreo cake": 2
@@ -51,7 +51,7 @@
     "_id": "c3",
     "restaurant_name": "Pizzabakeren",
     "menu": {
-      "Peperoni pizza": 3,
+      "Pepperoni pizza": 3,
       "Hawaii pizza": 1,
       "Mix": 5,
       "The Mexican": 3
@@ -67,7 +67,7 @@
     "_id": "c3",
     "restaurant_name": "Campino",
     "menu": {
-      "Peperoni pizza": 3,
+      "Pepperoni pizza": 3,
       "Hawaii pizza": 1,
       "Sliders": 2
     },
@@ -82,7 +82,7 @@
     "_id": "c3",
     "restaurant_name": "Pizzaexpressen",
     "menu": {
-      "Peperoni pizza": 3,
+      "Pepperoni pizza": 3,
       "Hawaii pizza": 1,
       "Sliders": 2
     },
@@ -97,7 +97,7 @@
     "_id": "c3",
     "restaurant_name": "Domino's",
     "menu": {
-      "Peperoni pizza": 3,
+      "Pepperoni pizza": 3,
       "Hawaii pizza": 1,
       "Sliders": 2
     },
@@ -112,15 +112,15 @@
     "_id": "e94",
     "restaurant_name": "Evelien's Bar",
     "menu": {
-      "Peperoni pizza": 3.2,
-      "Mozerella pizza": 2.5,
+      "Pepperoni pizza": 3.2,
+      "Mozzarella pizza": 2.5,
       "Potatomix": 2.3,
       "Pasta carbonara": 3.4,
       "Duvel": 2.2,
       "Stella": 2.1,
       "Pepsi Max": 2,
       "1Peperoni pizza": 3.2,
-      "1Mozerella pizza": 2.5,
+      "1Mozzarella pizza": 2.5,
       "1Potatomix": 2.3,
       "1Pasta carbonara": 3.4,
       "1Duvel": 2.2,

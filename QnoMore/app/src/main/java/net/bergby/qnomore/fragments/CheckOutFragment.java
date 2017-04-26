@@ -14,7 +14,7 @@ import net.bergby.qnomore.R;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
+import java.util.*;
 
 public class CheckOutFragment extends Fragment implements View.OnClickListener
 {
@@ -46,6 +46,7 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
     private ArrayList<String> itemArray = new ArrayList<>();
     //String currency = "\u20ac";
     private String stringSum;
+    private ArrayList<String> itemArraySorted = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +64,13 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
             itemArray.addAll(itemArrayRaw);
         }
 
+        Set<String> unique = new HashSet<>(itemArray);
+
+        for (String item: unique)
+        {
+            itemArraySorted.add(Collections.frequency(itemArray, item) + " x " + item);
+        }
+
         ListView checkOutListView = (ListView) view.findViewById(R.id.checkoutListView);
         Button backButton = (Button) view.findViewById(R.id.backButton);
         TextView sumTextView = (TextView) view.findViewById(R.id.checkoutSum);
@@ -71,9 +79,11 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity().getApplicationContext(),
                 R.layout.standard_text_view,
-                itemArray
+                itemArraySorted
         );
         checkOutListView.setAdapter(arrayAdapter);
+
+        System.out.println(itemArray);
 
         sumTextView.setText(getString(R.string.euroSymbol, stringSum));
 
@@ -89,5 +99,7 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    
 
 }
