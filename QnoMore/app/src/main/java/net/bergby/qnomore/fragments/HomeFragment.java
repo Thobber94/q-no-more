@@ -24,7 +24,8 @@ public class HomeFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.home_main, container, false);
+        View view;
+        view = inflater.inflate(R.layout.home_main, container, false);
 
         Bitmap bitmap = QRCode.from("Hello world! \n \n This is a test.").bitmap();
         ImageView imageView = (ImageView) view.findViewById(R.id.testImageVIew);

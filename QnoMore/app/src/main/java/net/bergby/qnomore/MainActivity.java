@@ -3,7 +3,11 @@ package net.bergby.qnomore;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +18,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -26,9 +31,12 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 import net.bergby.qnomore.fragments.*;
 import net.bergby.qnomore.helpClasses.JsonParser;
+import net.bergby.qnomore.services.OrderCountDown;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
@@ -332,7 +340,7 @@ public class MainActivity extends AppCompatActivity
 
         Bundle bundle;
 
-        if (sum != 0.0)
+        if (sum != 0.0 || items.isEmpty())
         {
             String stringSum = String.valueOf(sum);
 
@@ -362,5 +370,91 @@ public class MainActivity extends AppCompatActivity
     public void onCheckOutFragmentAction(ArrayList<String> items, double sum)
     {
         System.out.println(items + "  " + sum);
+        Intent orderCountDownService = new Intent(this, OrderCountDown.class);
+        orderCountDownService.putExtra("countDownTime", 10000);
+        startService(orderCountDownService);
+
+        Log.i("Order", "Started service");
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver()
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            orderCountDownReceiver(intent);
+        }
+    };
+
+    private void orderCountDownReceiver(Intent intent)
+    {
+
+        if (!intent.getExtras().isEmpty())
+        {
+            long millisecondsUntilFinished = intent.getLongExtra("countdown", 0);
+            boolean isDone = intent.getBooleanExtra("finished", false);
+            if (isDone)
+            {
+                System.out.println("Order done! Woo!");
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.cancel(1);
+
+                int icon = R.drawable.ic_action_coffee2go;
+
+                notificationBuilder("Your order is complete! Click to see pickup code.", "Your order is complete!", 2, icon);
+            }
+            else
+            {
+                String title = "Your order is being prepared!";
+                int icon = R.drawable.ic_action_clock;
+                String timeLeft =
+                String.format(Locale.getDefault(), "%d min, %d sec",
+                        TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(millisecondsUntilFinished) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished))
+                );
+
+                System.out.println(timeLeft);
+
+                notificationBuilder(timeLeft, title, 1, icon);
+
+            }
+        }
+    }
+
+    private void notificationBuilder(String content, String title, int notificaionId, int icon)
+    {
+        android.support.v4.app.NotificationCompat.Builder nBuilder =
+                new NotificationCompat.Builder(this)
+                .setSmallIcon(icon)
+                .setContentTitle(title)
+                .setContentText(content);
+
+        NotificationManager nNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        nNotifyMgr.notify(notificaionId, nBuilder.build());
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(OrderCountDown.COUNTDOWN_BR));
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        stopService(new Intent(this, OrderCountDown.class));
     }
 }
