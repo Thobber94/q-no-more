@@ -11,13 +11,16 @@ import android.widget.ImageButton;
 import net.bergby.qnomore.R;
 import org.json.JSONException;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 
 public class WarmColdFragment extends Fragment implements View.OnClickListener
 {
 
     public interface HotColdButtonChosenListener
     {
-        void onHotColdButtonSelected(int button) throws JSONException;
+        void onHotColdButtonSelected(int button) throws JSONException, IOException, ExecutionException, InterruptedException;
     }
 
     private View view;
@@ -78,6 +81,15 @@ public class WarmColdFragment extends Fragment implements View.OnClickListener
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                } catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                } catch (ExecutionException e)
+                {
+                    e.printStackTrace();
                 }
                 break;
             case R.id.imageButtonWarm:
@@ -85,6 +97,15 @@ public class WarmColdFragment extends Fragment implements View.OnClickListener
                 {
                     mCallback.onHotColdButtonSelected(3);
                 } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                } catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                } catch (ExecutionException e)
                 {
                     e.printStackTrace();
                 }

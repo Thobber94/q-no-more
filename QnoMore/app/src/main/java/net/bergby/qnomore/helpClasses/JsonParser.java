@@ -1,6 +1,9 @@
 package net.bergby.qnomore.helpClasses;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,7 +11,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by thomas on 15-Mar-17.
@@ -17,7 +26,6 @@ import java.util.ArrayList;
 
 public class JsonParser extends ArrayList<String>
 {
-    private static Context mContext;
     private ArrayList<String> restaurantNames = new ArrayList<>();
     private boolean warm;
     private boolean cold;
@@ -25,9 +33,9 @@ public class JsonParser extends ArrayList<String>
     private boolean drink;
 
 
-    public JsonParser(Context context, String fileNameJson, boolean warm, boolean cold, boolean food, boolean drink) throws JSONException
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public JsonParser(Context context, String url, boolean warm, boolean cold, boolean food, boolean drink) throws JSONException, IOException, ExecutionException, InterruptedException
     {
-        mContext = context;
 
         // Sets which buttons have been pressed
         this.warm = warm;
@@ -36,16 +44,17 @@ public class JsonParser extends ArrayList<String>
         this.drink = drink;
 
         // Calls the method to start the process
-        getJsonValue(fileNameJson);
+        getJsonValue(url);
     }
 
 
-    private void getJsonValue(String jsonFile) throws JSONException
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getJsonValue(String url) throws JSONException, IOException, ExecutionException, InterruptedException
     {
 
         JSONArray jsonArray;
-
-        jsonArray = new JSONArray(readFile(jsonFile));
+        String json = String.valueOf(new jsonAsync().execute(url).get());
+        jsonArray = new JSONArray(json);
 
         for (int i = 0; i < jsonArray.length(); i++)
         {
@@ -91,6 +100,7 @@ public class JsonParser extends ArrayList<String>
         }
     }
 
+    /*
     // Reads file, and returns the JSON as string, sends it to getJsonValue method
     private static String readFile(String fileName)
     {
@@ -113,6 +123,54 @@ public class JsonParser extends ArrayList<String>
         }
 
         return json;
+    }
+    */
+
+    private class jsonAsync extends AsyncTask<String, String, String>
+    {
+
+        @Override
+        protected String doInBackground(String... urls)
+        {
+            URL url1 = null;
+            try
+            {
+                url1 = new URL(urls[0]);
+            } catch (MalformedURLException e)
+            {
+                e.printStackTrace();
+            }
+            HttpURLConnection request = null;
+            try
+            {
+                assert url1 != null;
+                request = (HttpURLConnection) url1.openConnection();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            try
+            {
+                assert request != null;
+                request.connect();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            String response = null;
+            try
+            {
+                Scanner s = new Scanner(new InputStreamReader(((InputStream) request.getContent()))).useDelimiter("\\A");
+                response = s.hasNext() ? s.next() : "";
+
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            return response;
+        }
     }
 
     public ArrayList<String> getRestaurantNames()

@@ -31,9 +31,11 @@ import net.bergby.qnomore.helpClasses.JsonParser;
 import net.bergby.qnomore.services.OrderCountDown;
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
@@ -270,7 +272,7 @@ public class MainActivity extends AppCompatActivity
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public void onHotColdButtonSelected(int button) throws JSONException
+    public void onHotColdButtonSelected(int button) throws JSONException, IOException, ExecutionException, InterruptedException
     {
         // Fragments
         FragmentManager fragmentManager = getFragmentManager();
@@ -293,7 +295,7 @@ public class MainActivity extends AppCompatActivity
         {
             case 3:
                 warm = true;
-                jsonParser = new JsonParser(this, "jsonFile.json", true, false, food, drinks);
+                jsonParser = new JsonParser(this, "http://10.0.2.2:3000/api/menus", true, false, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
                 bundle.putStringArrayList("restaurantList", restaurantList);
@@ -303,7 +305,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case 4:
                 cold = true;
-                jsonParser = new JsonParser(this, "jsonFile.json", false, true, food, drinks);
+                jsonParser = new JsonParser(this, "http://10.0.2.2:3000/api/menus", false, true, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
                 bundle.putStringArrayList("restaurantList", restaurantList);
