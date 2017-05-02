@@ -1,12 +1,10 @@
 package net.bergby.qnomore;
 
 import android.app.*;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
@@ -34,6 +32,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -377,6 +376,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCheckOutFragmentAction(ArrayList<String> items, double sum)
     {
+
+        // Get all keys from preferences, and removes all "quantity" keys
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        Map<String, ?> allSharedPrefs = preferences.getAll();
+        for (Map.Entry<String, ?> entry : allSharedPrefs.entrySet())
+        {
+            if (entry.getKey().contains("quantity"))
+            {
+                editor.remove(entry.getKey());
+                editor.apply();
+            }
+        }
+
         itemsGlobal = items;
         sumGlobal = sum;
         System.out.println(items + "  " + sum);
