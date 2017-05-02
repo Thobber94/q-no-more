@@ -1,9 +1,6 @@
 package net.bergby.qnomore;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.NotificationManager;
+import android.app.*;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +33,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
@@ -103,6 +101,9 @@ public class MainActivity extends AppCompatActivity
 
         HomeFragment homeFragment = new HomeFragment();
         fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
+        Bundle bundle = new Bundle();
+        bundle.putString("message", "Welcome!");
+        homeFragment.setArguments(bundle);
         fragmentTransaction.commit();
 
         // Selects the "Home" navigation-drawer item
@@ -198,6 +199,9 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home)
         {
             HomeFragment homeFragment = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("message", "Welcome!");
+            homeFragment.setArguments(bundle);
             fragmentTransaction.replace(R.id.content_main, homeFragment, "LOCKED");
             if (findViewById(R.id.fab).getVisibility() == View.GONE)
             {
@@ -365,14 +369,29 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private ArrayList<String> itemsGlobal;
+    private double sumGlobal;
 
     @Override
     public void onCheckOutFragmentAction(ArrayList<String> items, double sum)
     {
+        itemsGlobal = items;
+        sumGlobal = sum;
         System.out.println(items + "  " + sum);
         Intent orderCountDownService = new Intent(this, OrderCountDown.class);
         orderCountDownService.putExtra("countDownTime", 10000);
         startService(orderCountDownService);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        HomeFragment homeFragment = new HomeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("message", "Thank you for your order!");
+        homeFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_main, homeFragment, "LOCKED");
+        fragmentTransaction.commit();
 
         Log.i("Order", "Started service");
     }
@@ -382,32 +401,54 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            orderCountDownReceiver(intent);
+            orderCountDownReceiver(intent, itemsGlobal, sumGlobal);
         }
     };
 
-    private void orderCountDownReceiver(Intent intent)
+    private void orderCountDownReceiver(Intent intent, ArrayList<String> items, double sum)
     {
-
         if (!intent.getExtras().isEmpty())
         {
             long millisecondsUntilFinished = intent.getLongExtra("countdown", 0);
             boolean isDone = intent.getBooleanExtra("finished", false);
             if (isDone)
             {
-                System.out.println("Order done! Woo!");
+                int icon = R.drawable.ic_action_coffee2go;
+                String content = "Your order is complete! Click to see pickup code.";
+                String title = "Your order is complete!";
+
+                StringBuilder expandedContent = new StringBuilder();
+                for (String s: items)
+                {
+                    expandedContent.append(s).append(", ");
+                }
+
+                expandedContent.append("\n").append("The total sum is: ").append("€").append(sum);
+
+                int notificationId = new Random().nextInt(100);
+
                 NotificationManager notificationManager =
                         (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                // Removes the old notification, and changes it to the pickup notification
                 notificationManager.cancel(1);
 
-                int icon = R.drawable.ic_action_coffee2go;
+                android.support.v4.app.NotificationCompat.Builder nBuilder =
+                        new NotificationCompat.Builder(this)
+                                .setSmallIcon(icon)
+                                .setContentTitle(title)
+                                .setContentText(content)
+                                .setDefaults(Notification.DEFAULT_ALL)
+                                .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle()
+                                .bigText(expandedContent));
 
-                notificationBuilder("Your order is complete! Click to see pickup code.", "Your order is complete!", 2, icon);
+                notificationManager.notify(notificationId, nBuilder.build());
             }
             else
             {
                 String title = "Your order is being prepared!";
                 int icon = R.drawable.ic_action_clock;
+                int notificationId = 001;
                 String timeLeft =
                 String.format(Locale.getDefault(), "%d min, %d sec",
                         TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished),
@@ -415,26 +456,19 @@ public class MainActivity extends AppCompatActivity
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished))
                 );
 
-                System.out.println(timeLeft);
+                android.support.v4.app.NotificationCompat.Builder nBuilder =
+                        new NotificationCompat.Builder(this)
+                                .setSmallIcon(icon)
+                                .setContentTitle(title)
+                                .setContentText(timeLeft);
 
-                notificationBuilder(timeLeft, title, 1, icon);
+                NotificationManager nNotifyMgr =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                nNotifyMgr.notify(notificationId, nBuilder.build());
 
             }
         }
-    }
-
-    private void notificationBuilder(String content, String title, int notificaionId, int icon)
-    {
-        android.support.v4.app.NotificationCompat.Builder nBuilder =
-                new NotificationCompat.Builder(this)
-                .setSmallIcon(icon)
-                .setContentTitle(title)
-                .setContentText(content);
-
-        NotificationManager nNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        nNotifyMgr.notify(notificaionId, nBuilder.build());
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import net.bergby.qnomore.R;
 import net.glxn.qrgen.android.QRCode;
 
@@ -26,6 +27,14 @@ public class HomeFragment extends Fragment
     {
         View view;
         view = inflater.inflate(R.layout.home_main, container, false);
+
+        String message = getArguments().getString("message");
+
+        if (message != null)
+        {
+            TextView textView = (TextView) view.findViewById(R.id.tv_home);
+            textView.setText(message);
+        }
 
         Bitmap bitmap = QRCode.from("Hello world! \n \n This is a test.").bitmap();
         ImageView imageView = (ImageView) view.findViewById(R.id.testImageVIew);

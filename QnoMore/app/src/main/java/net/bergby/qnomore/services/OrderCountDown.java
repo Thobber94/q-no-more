@@ -52,6 +52,8 @@ public class OrderCountDown extends Service
 
     private void startCountDown()
     {
+        bi.putExtra("finished", false);
+        sendBroadcast(bi);
         countDownTimer = new CountDownTimer(time, 1000)
         {
             @Override
@@ -67,6 +69,7 @@ public class OrderCountDown extends Service
             {
                 bi.putExtra("finished", true);
                 sendBroadcast(bi);
+                countDownTimer.cancel();
                 //Log.i(TAG, "Order ready");
             }
         };
