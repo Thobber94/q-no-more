@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity
         {
             case 3:
                 warm = true;
-                jsonParser = new JsonParser(this, "http://10.0.2.2:3000/api/menus", true, false, food, drinks);
+                jsonParser = new JsonParser(this, "https://server.bergby.net/QnoMoreAPI/api/menus", true, false, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
                 bundle.putStringArrayList("restaurantList", restaurantList);
@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case 4:
                 cold = true;
-                jsonParser = new JsonParser(this, "http://10.0.2.2:3000/api/menus", false, true, food, drinks);
+                jsonParser = new JsonParser(this, "https://server.bergby.net/QnoMoreAPI/api/menus", false, true, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
                 bundle.putStringArrayList("restaurantList", restaurantList);
