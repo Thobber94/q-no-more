@@ -1,0 +1,25 @@
+{
+  "name": "Menu",
+  "plural": "menus",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "restaurant_name": {
+      "type": "string",
+      "required": true
+    },
+    "seller": {
+      "type": "object"
+    },
+    "menu": {
+      "type": "object"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,12 @@
+{
+  "qnomoreDS": {
+    "host": "localhost",
+    "port": 27017,
+    "url": "",
+    "database": "qnomoreDS",
+    "password": "",
+    "name": "qnomoreDS",
+    "user": "",
+    "connector": "mongodb"
+  }
+}

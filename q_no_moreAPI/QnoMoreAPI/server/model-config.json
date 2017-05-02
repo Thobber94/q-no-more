@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "qnomoreDS"
+  },
+  "AccessToken": {
+    "dataSource": "qnomoreDS",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "qnomoreDS",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "qnomoreDS",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "qnomoreDS",
+    "public": false
+  },
+  "Menu": {
+    "dataSource": "qnomoreDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  }
+}
