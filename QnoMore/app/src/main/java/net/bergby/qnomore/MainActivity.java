@@ -209,6 +209,10 @@ public class MainActivity extends AppCompatActivity
                 findViewById(R.id.fab).setVisibility(View.VISIBLE);
             }
         }
+        else if (id == R.id.nav_order)
+        {
+            Log.i("Info", "Order clicked");
+        }
         else if (id == R.id.nav_account_circle)
         {
             Log.i("Info", "Account clicked");
