@@ -3,11 +3,9 @@ package net.bergby.qnomore;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.*;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -274,7 +272,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onHotColdButtonSelected(int button) throws JSONException, IOException, ExecutionException, InterruptedException
     {
@@ -296,7 +293,7 @@ public class MainActivity extends AppCompatActivity
         switch (button)
         {
             case 3:
-                jsonParser = new JsonParser(this, "https://server.bergby.net/QnoMoreAPI/api/menus", true, false, food, drinks);
+                jsonParser = new JsonParser("https://server.bergby.net/QnoMoreAPI/api/menus", true, false, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
                 bundle.putStringArrayList("restaurantList", restaurantList);
@@ -305,7 +302,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.replace(R.id.content_main, restaurantSelectorFragment, "SECOND");
                 break;
             case 4:
-                jsonParser = new JsonParser(this, "https://server.bergby.net/QnoMoreAPI/api/menus", false, true, food, drinks);
+                jsonParser = new JsonParser("https://server.bergby.net/QnoMoreAPI/api/menus", false, true, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
                 bundle.putStringArrayList("restaurantList", restaurantList);

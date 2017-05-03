@@ -1,9 +1,6 @@
 package net.bergby.qnomore.helpClasses;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +21,7 @@ import java.util.concurrent.ExecutionException;
  */
 
 
-public class JsonParser extends ArrayList<String>
+public class JsonParser
 {
     private ArrayList<String> restaurantNames = new ArrayList<>();
     private boolean warm;
@@ -33,8 +30,7 @@ public class JsonParser extends ArrayList<String>
     private boolean drink;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public JsonParser(Context context, String url, boolean warm, boolean cold, boolean food, boolean drink) throws JSONException, IOException, ExecutionException, InterruptedException
+    public JsonParser(String url, boolean warm, boolean cold, boolean food, boolean drink) throws JSONException, IOException, ExecutionException, InterruptedException
     {
 
         // Sets which buttons have been pressed
@@ -48,7 +44,6 @@ public class JsonParser extends ArrayList<String>
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getJsonValue(String url) throws JSONException, IOException, ExecutionException, InterruptedException
     {
 
@@ -99,6 +94,8 @@ public class JsonParser extends ArrayList<String>
             }
         }
     }
+
+    // ### OLD! FOR READING LOCAL FILE ### //
 
     /*
     // Reads file, and returns the JSON as string, sends it to getJsonValue method
