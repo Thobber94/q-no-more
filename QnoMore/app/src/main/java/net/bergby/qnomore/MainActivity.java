@@ -212,6 +212,8 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_order)
         {
             Log.i("Info", "Order clicked");
+            MyOrdersFragment myOrdersFragment = new MyOrdersFragment();
+            fragmentTransaction.replace(R.id.content_main, myOrdersFragment, "SECOND");
         }
         else if (id == R.id.nav_account_circle)
         {
