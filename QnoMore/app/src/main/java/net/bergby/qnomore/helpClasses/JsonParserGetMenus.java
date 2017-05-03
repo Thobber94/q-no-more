@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutionException;
  */
 
 
-public class JsonParser
+public class JsonParserGetMenus
 {
     private ArrayList<String> restaurantNames = new ArrayList<>();
     private boolean warm;
@@ -30,7 +30,7 @@ public class JsonParser
     private boolean drink;
 
 
-    public JsonParser(String url, boolean warm, boolean cold, boolean food, boolean drink) throws JSONException, IOException, ExecutionException, InterruptedException
+    public JsonParserGetMenus(String url, boolean warm, boolean cold, boolean food, boolean drink) throws JSONException, IOException, ExecutionException, InterruptedException
     {
 
         // Sets which buttons have been pressed

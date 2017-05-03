@@ -7,15 +7,15 @@
     "validateUpsert": true
   },
   "properties": {
-    "restaurant_name": {
-      "type": "string",
-      "required": true
-    },
     "seller": {
       "type": "object"
     },
     "menu": {
       "type": "object"
+    },
+    "restaurant_name": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],

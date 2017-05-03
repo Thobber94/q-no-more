@@ -25,7 +25,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 import net.bergby.qnomore.fragments.*;
-import net.bergby.qnomore.helpClasses.JsonParser;
+import net.bergby.qnomore.helpClasses.JsonParserGetMenus;
 import net.bergby.qnomore.services.OrderCountDown;
 import org.json.JSONException;
 import java.io.IOException;
@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity
         //FRAGMENT HERE
         RestaurantSelectorFragment restaurantSelectorFragment = new RestaurantSelectorFragment();
 
-        JsonParser jsonParser;
+        JsonParserGetMenus jsonParser;
         ArrayList<String> restaurantList;
         Bundle bundle;
 
@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity
         switch (button)
         {
             case 3:
-                jsonParser = new JsonParser("https://server.bergby.net/QnoMoreAPI/api/menus", true, false, food, drinks);
+                jsonParser = new JsonParserGetMenus("https://server.bergby.net/QnoMoreAPI/api/menus", true, false, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
                 bundle.putStringArrayList("restaurantList", restaurantList);
@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.replace(R.id.content_main, restaurantSelectorFragment, "SECOND");
                 break;
             case 4:
-                jsonParser = new JsonParser("https://server.bergby.net/QnoMoreAPI/api/menus", false, true, food, drinks);
+                jsonParser = new JsonParserGetMenus("https://server.bergby.net/QnoMoreAPI/api/menus", false, true, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
                 bundle.putStringArrayList("restaurantList", restaurantList);

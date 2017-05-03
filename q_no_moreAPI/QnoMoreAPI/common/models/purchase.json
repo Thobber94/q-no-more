@@ -1,0 +1,35 @@
+{
+  "name": "Purchase",
+  "plural": "purchases",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "required": true
+    },
+    "purchase_date": {
+      "type": "date",
+      "required": true
+    },
+    "confirmation_code": {
+      "type": "string",
+      "required": true
+    },
+    "purchase_sum": {
+      "type": "number",
+      "required": true
+    },
+    "purchase_items": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

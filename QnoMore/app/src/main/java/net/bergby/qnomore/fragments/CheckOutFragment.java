@@ -36,14 +36,10 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
     }
 
     private CheckOutFragmentInterface mCallback;
-    private ArrayList<String> itemArrayRaw;
     private ArrayList<String> itemArray = new ArrayList<>();
-    //String currency = "\u20ac";
-    private String stringSum;
     private ArrayList<String> itemArraySorted = new ArrayList<>();
     private double sum;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -52,8 +48,8 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
 
         sum = Double.parseDouble(getArguments().getString("sum"));
         sum = round(sum, 2);
-        itemArrayRaw = getArguments().getStringArrayList("items");
-        stringSum = String.valueOf(sum);
+        ArrayList<String> itemArrayRaw = getArguments().getStringArrayList("items");
+        String stringSum = String.valueOf(sum);
 
         if (itemArray.isEmpty())
         {
