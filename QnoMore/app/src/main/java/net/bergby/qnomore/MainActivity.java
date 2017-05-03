@@ -1,5 +1,8 @@
 package net.bergby.qnomore;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.support.v4.app.*;
 import android.app.*;
 import android.content.*;
 import android.os.Build;
@@ -9,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -44,8 +48,6 @@ public class MainActivity extends AppCompatActivity
     // GLOBAL VARIABLES
     private boolean food;
     private boolean drinks;
-    private boolean warm;
-    private boolean cold;
 
 
     @Override
@@ -75,8 +77,6 @@ public class MainActivity extends AppCompatActivity
 
         food = false;
         drinks = false;
-        warm = false;
-        cold = false;
 
         initSidebar();
     }
@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Runs the "Home" fragment
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         HomeFragment homeFragment = new HomeFragment();
         fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
@@ -125,8 +125,8 @@ public class MainActivity extends AppCompatActivity
     private void startPurchase()
     {
         // Fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         FoodDrinkFragment foodDrinkFragment = new FoodDrinkFragment();
         fragmentTransaction.replace(R.id.content_main, foodDrinkFragment, "LOCKED");
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        FragmentManager fragmentManager = getFragmentManager();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.content_main);
 
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         // If it is anything in the backstack
         else if (backStackEntryCount == 0)
         {
-            // If the current fragment don't got the tag "first", go back
+            // If the current fragment don't got the tag "locked", go back
             if (!"LOCKED".equals(currentFragment.getTag()))
             {
                 getFragmentManager().popBackStack();
@@ -191,8 +191,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
         // Fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -246,8 +246,8 @@ public class MainActivity extends AppCompatActivity
     public void onFoodDrinkButtonSelected(int button)
     {
         // Fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         WarmColdFragment warmColdFragment;
         /*
         Button = 1: Drinks
@@ -280,8 +280,8 @@ public class MainActivity extends AppCompatActivity
     public void onHotColdButtonSelected(int button) throws JSONException, IOException, ExecutionException, InterruptedException
     {
         // Fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //FRAGMENT HERE
         RestaurantSelectorFragment restaurantSelectorFragment = new RestaurantSelectorFragment();
 
@@ -293,13 +293,10 @@ public class MainActivity extends AppCompatActivity
         Button = 3: Warm
         Button = 4: Cold
          */
-        warm = false;
-        cold = false;
 
         switch (button)
         {
             case 3:
-                warm = true;
                 jsonParser = new JsonParser(this, "https://server.bergby.net/QnoMoreAPI/api/menus", true, false, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
@@ -309,7 +306,6 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.replace(R.id.content_main, restaurantSelectorFragment, "SECOND");
                 break;
             case 4:
-                cold = true;
                 jsonParser = new JsonParser(this, "https://server.bergby.net/QnoMoreAPI/api/menus", false, true, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
@@ -330,8 +326,8 @@ public class MainActivity extends AppCompatActivity
 
         Bundle bundle;
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         MenuSelectorFragment menuSelectorFragment = new MenuSelectorFragment();
 
@@ -355,8 +351,8 @@ public class MainActivity extends AppCompatActivity
         {
             String stringSum = String.valueOf(sum);
 
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             CheckOutFragment checkOutFragment = new CheckOutFragment();
 
@@ -403,8 +399,8 @@ public class MainActivity extends AppCompatActivity
         orderCountDownService.putExtra("countDownTime", 10000);
         startService(orderCountDownService);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         HomeFragment homeFragment = new HomeFragment();
         Bundle bundle = new Bundle();
@@ -434,7 +430,7 @@ public class MainActivity extends AppCompatActivity
             boolean isDone = intent.getBooleanExtra("finished", false);
             if (isDone)
             {
-                int icon = R.drawable.ic_action_coffee2go;
+                int icon = R.drawable.ic_check_box;
                 String content = "Your order is complete! Click to see pickup code.";
                 String title = "Your order is complete!";
 

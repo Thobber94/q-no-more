@@ -32,10 +32,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     static String nav_user = null;
     static String nav_email;
     static String nav_userImage;
+    private SharedPreferences.Editor editor;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        editor =  preferences.edit();
 
         // Clears the shared-preferences on system load.
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
@@ -47,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestProfile()
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .build();
 
@@ -99,10 +104,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void handleSignInResult(GoogleSignInResult result)
     {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        String profileIdKey = "net.bergby.qnomore.googleId";
         if (result.isSuccess())
         {
-            Log.e("Is success?", "True");
             // Signed in successfully
             GoogleSignInAccount userAccount = result.getSignInAccount();
             if (userAccount != null)
@@ -113,8 +117,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 nav_email = userAccount.getEmail();
                 nav_user = userAccount.getDisplayName();
                 nav_userImage = String.valueOf(userAccount.getPhotoUrl());
+                editor.putString(profileIdKey, userAccount.getId()).apply();
                 onUserAuthenticated(true);
-                Log.i("ImageUrl", nav_userImage);
             }
             else
             {
