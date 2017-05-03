@@ -1,9 +1,7 @@
 package net.bergby.qnomore;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.support.v4.app.*;
-import android.app.*;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.*;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,7 +30,6 @@ import net.bergby.qnomore.fragments.*;
 import net.bergby.qnomore.helpClasses.JsonParser;
 import net.bergby.qnomore.services.OrderCountDown;
 import org.json.JSONException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -40,6 +37,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
@@ -97,8 +96,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Runs the "Home" fragment
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         HomeFragment homeFragment = new HomeFragment();
         fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
@@ -125,8 +124,8 @@ public class MainActivity extends AppCompatActivity
     private void startPurchase()
     {
         // Fragments
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         FoodDrinkFragment foodDrinkFragment = new FoodDrinkFragment();
         fragmentTransaction.replace(R.id.content_main, foodDrinkFragment, "LOCKED");
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.content_main);
 
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
@@ -191,8 +190,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
         // Fragments
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -246,8 +245,8 @@ public class MainActivity extends AppCompatActivity
     public void onFoodDrinkButtonSelected(int button)
     {
         // Fragments
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         WarmColdFragment warmColdFragment;
         /*
         Button = 1: Drinks
@@ -280,8 +279,8 @@ public class MainActivity extends AppCompatActivity
     public void onHotColdButtonSelected(int button) throws JSONException, IOException, ExecutionException, InterruptedException
     {
         // Fragments
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //FRAGMENT HERE
         RestaurantSelectorFragment restaurantSelectorFragment = new RestaurantSelectorFragment();
 
@@ -326,8 +325,8 @@ public class MainActivity extends AppCompatActivity
 
         Bundle bundle;
 
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         MenuSelectorFragment menuSelectorFragment = new MenuSelectorFragment();
 
@@ -351,8 +350,8 @@ public class MainActivity extends AppCompatActivity
         {
             String stringSum = String.valueOf(sum);
 
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             CheckOutFragment checkOutFragment = new CheckOutFragment();
 
@@ -399,8 +398,8 @@ public class MainActivity extends AppCompatActivity
         orderCountDownService.putExtra("countDownTime", 10000);
         startService(orderCountDownService);
 
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         HomeFragment homeFragment = new HomeFragment();
         Bundle bundle = new Bundle();
