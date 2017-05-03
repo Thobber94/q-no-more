@@ -1,15 +1,12 @@
 package net.bergby.qnomore.fragments;
 
-import android.support.v4.app.Fragment;
-import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import net.bergby.qnomore.R;
-import net.glxn.qrgen.android.QRCode;
 
 /**
  * Created by thomas on 04-Mar-17.
@@ -35,11 +32,6 @@ public class HomeFragment extends Fragment
             TextView textView = (TextView) view.findViewById(R.id.tv_home);
             textView.setText(message);
         }
-
-        Bitmap bitmap = QRCode.from("Hello world! \n \n This is a test.").bitmap();
-        ImageView imageView = (ImageView) view.findViewById(R.id.testImageVIew);
-        imageView.setImageBitmap(bitmap);
-
         return view;
     }
 }
