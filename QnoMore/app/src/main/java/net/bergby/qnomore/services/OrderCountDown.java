@@ -47,7 +47,9 @@ public class OrderCountDown extends Service
             time = (Integer) bundle.get("countDownTime");
             startCountDown();
         }
-        return super.onStartCommand(intent, flags, startId);
+
+        super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
     private void startCountDown()

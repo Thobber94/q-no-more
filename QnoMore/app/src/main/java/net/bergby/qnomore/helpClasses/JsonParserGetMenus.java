@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -130,15 +129,35 @@ public class JsonParserGetMenus
         @Override
         protected String doInBackground(String... urls)
         {
-            String response = null;
-            URL url1;
+            URL url1 = null;
             try
             {
                 url1 = new URL(urls[0]);
-                HttpURLConnection request;
+            } catch (MalformedURLException e)
+            {
+                e.printStackTrace();
+            }
+            HttpURLConnection request = null;
+            try
+            {
+                assert url1 != null;
                 request = (HttpURLConnection) url1.openConnection();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            try
+            {
                 assert request != null;
                 request.connect();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            String response = null;
+            try
+            {
                 Scanner s = new Scanner(new InputStreamReader(((InputStream) request.getContent()))).useDelimiter("\\A");
                 response = s.hasNext() ? s.next() : "";
 
@@ -146,6 +165,7 @@ public class JsonParserGetMenus
             {
                 e.printStackTrace();
             }
+
             return response;
         }
     }
