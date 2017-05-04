@@ -1,20 +1,19 @@
 package net.bergby.qnomore;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.*;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -31,14 +30,14 @@ import net.bergby.qnomore.helpClasses.JsonParserGetMenus;
 import net.bergby.qnomore.helpClasses.JsonParserPostPurchase;
 import net.bergby.qnomore.services.OrderCountDown;
 import org.json.JSONException;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
@@ -49,11 +48,9 @@ public class MainActivity extends AppCompatActivity
     private boolean food;
     private boolean drinks;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -84,37 +81,47 @@ public class MainActivity extends AppCompatActivity
     private void initSidebar()
     {
 
-        String fromNotification = getIntent().getStringExtra("notificationFragment");
-
-        System.out.println(fromNotification);
-
+        String fromNotification =  getIntent().getStringExtra("notificationFragment");
+        System.out.println("Restarted: " + fromNotification);
         //Starts the fragment manager
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.syncState();
+
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Listener for the fab button
+        fab.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startPurchase();
+                fab.setVisibility(View.GONE);
+                navigationView.setCheckedItem(R.id.menu_none);
+            }
+        });
 
         if (fromNotification != null)
         {
             MyOrdersFragment myOrdersFragment = new MyOrdersFragment();
             fragmentTransaction.replace(R.id.content_main, myOrdersFragment, "HOME");
             fragmentTransaction.commit();
+            fab.setVisibility(View.GONE);
+            navigationView.setCheckedItem(R.id.nav_order);
         }
         else
         {
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.setDrawerListener(toggle);
-            toggle.syncState();
-
-            final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
-
             // Runs the "Home" fragment
-
             HomeFragment homeFragment = new HomeFragment();
             fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
             Bundle bundle = new Bundle();
@@ -124,18 +131,6 @@ public class MainActivity extends AppCompatActivity
 
             // Selects the "Home" navigation-drawer item
             navigationView.setCheckedItem(R.id.nav_home);
-
-            // Listener for the fab button
-            fab.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    startPurchase();
-                    fab.setVisibility(View.GONE);
-                    navigationView.setCheckedItem(R.id.menu_none);
-                }
-            });
         }
     }
 
@@ -231,6 +226,10 @@ public class MainActivity extends AppCompatActivity
             Log.i("Info", "Order clicked");
             MyOrdersFragment myOrdersFragment = new MyOrdersFragment();
             fragmentTransaction.replace(R.id.content_main, myOrdersFragment, "SECOND");
+            if (findViewById(R.id.fab).getVisibility() == View.VISIBLE)
+            {
+                findViewById(R.id.fab).setVisibility(View.GONE);
+            }
         }
         else if (id == R.id.nav_account_circle)
         {
@@ -239,6 +238,10 @@ public class MainActivity extends AppCompatActivity
             EditProfileFragment editProfileFragment = new EditProfileFragment();
 
             fragmentTransaction.replace(R.id.content_main, editProfileFragment, "LOCKED");
+            if (findViewById(R.id.fab).getVisibility() == View.VISIBLE)
+            {
+                findViewById(R.id.fab).setVisibility(View.GONE);
+            }
         }
         else if (id == R.id.nav_share)
         {
@@ -460,8 +463,10 @@ public class MainActivity extends AppCompatActivity
             System.out.println("Code is 200!");
 
             System.out.println(itemsGlobal + "  " + sumGlobal);
-            Intent orderCountDownService = new Intent(this, OrderCountDown.class);
-            orderCountDownService.putExtra("countDownTime", 10000);
+            Intent orderCountDownService = new Intent(MainActivity.this, OrderCountDown.class);
+            orderCountDownService.putExtra("countDownTime", 30000);
+            orderCountDownService.putExtra("items", itemsGlobal);
+            orderCountDownService.putExtra("sum", sumGlobal);
             startService(orderCountDownService);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -483,110 +488,47 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver()
-    {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            orderCountDownReceiver(intent, itemsGlobal, sumGlobal);
-        }
-    };
-
-    private void orderCountDownReceiver(Intent intent, ArrayList<String> items, double sum)
-    {
-        if (!intent.getExtras().isEmpty())
-        {
-            long millisecondsUntilFinished = intent.getLongExtra("countdown", 0);
-            boolean isDone = intent.getBooleanExtra("finished", false);
-            if (isDone)
-            {
-                int icon = R.drawable.ic_check_box;
-                String content = "Your order is complete! Click to see pickup code.";
-                String title = "Your order is complete!";
-
-                StringBuilder expandedContent = new StringBuilder();
-                for (String s: items)
-                {
-                    expandedContent.append(s).append(", ");
-                }
-
-                expandedContent.append("\n").append("The total sum is: ").append("€").append(sum);
-
-                int notificationId = new Random().nextInt(100);
-
-                NotificationManager notificationManager =
-                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-                // Removes the old notification, and changes it to the pickup notification
-                notificationManager.cancel(1);
-
-                // Sets intent to the notification
-                Intent notificationIntent = new Intent(this, MainActivity.class);
-                notificationIntent.putExtra("notificationFragment", "fromIntent");
-                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                        notificationIntent, 0);
-
-                android.support.v4.app.NotificationCompat.Builder nBuilder =
-                        new NotificationCompat.Builder(this)
-                                .setSmallIcon(icon)
-                                .setContentIntent(pendingIntent)
-                                .setContentTitle(title)
-                                .setContentText(content)
-                                .setDefaults(Notification.DEFAULT_ALL)
-                                .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle()
-                                .bigText(expandedContent));
-
-                notificationManager.notify(notificationId, nBuilder.build());
-            }
-            else
-            {
-                String title = "Your order is being prepared!";
-                int icon = R.drawable.ic_action_clock;
-                int notificationId = 001;
-                String timeLeft =
-                String.format(Locale.getDefault(), "%d min, %d sec",
-                        TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished),
-                        TimeUnit.MILLISECONDS.toSeconds(millisecondsUntilFinished) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished))
-                );
-
-                android.support.v4.app.NotificationCompat.Builder nBuilder =
-                        new NotificationCompat.Builder(this)
-                                .setSmallIcon(icon)
-                                .setContentTitle(title)
-                                .setContentText(timeLeft);
-
-                NotificationManager nNotifyMgr =
-                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-                nNotifyMgr.notify(notificationId, nBuilder.build());
-
-            }
-        }
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        registerReceiver(broadcastReceiver, new IntentFilter(OrderCountDown.COUNTDOWN_BR));
-    }
-
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        unregisterReceiver(broadcastReceiver);
-    }
-
     @Override
     protected void onDestroy()
     {
         super.onDestroy();
-        stopService(new Intent(this, OrderCountDown.class));
+        //stopService(new Intent(this, OrderCountDown.class));
     }
 
-    public String nextSessionId() {
+    @Override
+    protected void onRestart()
+    {
+        super.onRestart();
+        System.out.println("restarted!");
+
+        Bundle extras = getIntent().getExtras();
+
+        String fromNotification = extras.getString("notificationFragment");
+        System.out.println("From notification: " + fromNotification);
+
+        //Starts the fragment manager
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        if (fromNotification != null)
+        {
+            MyOrdersFragment myOrdersFragment = new MyOrdersFragment();
+            fragmentTransaction.replace(R.id.content_main, myOrdersFragment, "HOME");
+            fragmentTransaction.commit();
+        }
+        else
+        {
+            // Runs the "Home" fragment
+            HomeFragment homeFragment = new HomeFragment();
+            fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
+            Bundle bundle = new Bundle();
+            bundle.putString("message", "Welcome!");
+            homeFragment.setArguments(bundle);
+            fragmentTransaction.commit();
+        }
+    }
+
+    private String nextSessionId() {
         SecureRandom random = new SecureRandom();
         return new BigInteger(130, random).toString(32);
     }
