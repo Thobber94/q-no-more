@@ -12,7 +12,7 @@
       "required": true
     },
     "purchase_date": {
-      "type": "date",
+      "type": "string",
       "required": true
     },
     "confirmation_code": {

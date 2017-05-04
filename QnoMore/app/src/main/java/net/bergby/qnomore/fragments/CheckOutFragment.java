@@ -14,20 +14,23 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import net.bergby.qnomore.R;
+import org.json.JSONException;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 public class CheckOutFragment extends Fragment implements View.OnClickListener
 {
 
     public interface CheckOutFragmentInterface
     {
-        void onCheckOutFragmentAction(ArrayList<String> items, double sum);
+        void onCheckOutFragmentAction(ArrayList<String> items, double sum, String restaurant) throws InterruptedException, ExecutionException, JSONException, IOException;
     }
 
     public CheckOutFragment()
@@ -38,6 +41,7 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
     private CheckOutFragmentInterface mCallback;
     private ArrayList<String> itemArray = new ArrayList<>();
     private ArrayList<String> itemArraySorted = new ArrayList<>();
+    private String restaurant;
     private double sum;
 
     @Override
@@ -50,6 +54,7 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
         sum = round(sum, 2);
         ArrayList<String> itemArrayRaw = getArguments().getStringArrayList("items");
         String stringSum = String.valueOf(sum);
+        restaurant = getArguments().getString("restaurant");
 
         if (itemArray.isEmpty())
         {
@@ -117,7 +122,13 @@ public class CheckOutFragment extends Fragment implements View.OnClickListener
                 getFragmentManager().popBackStackImmediate();
                 break;
             case R.id.continue_button:
-                mCallback.onCheckOutFragmentAction(itemArraySorted, sum);
+                try
+                {
+                    mCallback.onCheckOutFragmentAction(itemArraySorted, sum, restaurant);
+                } catch (InterruptedException | ExecutionException | IOException | JSONException e)
+                {
+                    e.printStackTrace();
+                }
                 break;
         }
     }

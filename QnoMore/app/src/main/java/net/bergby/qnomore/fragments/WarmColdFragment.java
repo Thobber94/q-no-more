@@ -78,16 +78,7 @@ public class WarmColdFragment extends Fragment implements View.OnClickListener
                 try
                 {
                     mCallback.onHotColdButtonSelected(4);
-                } catch (JSONException e)
-                {
-                    e.printStackTrace();
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                } catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                } catch (ExecutionException e)
+                } catch (JSONException | ExecutionException | InterruptedException | IOException e)
                 {
                     e.printStackTrace();
                 }
@@ -96,16 +87,7 @@ public class WarmColdFragment extends Fragment implements View.OnClickListener
                 try
                 {
                     mCallback.onHotColdButtonSelected(3);
-                } catch (JSONException e)
-                {
-                    e.printStackTrace();
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                } catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                } catch (ExecutionException e)
+                } catch (JSONException | IOException | ExecutionException | InterruptedException e)
                 {
                     e.printStackTrace();
                 }

@@ -2,6 +2,7 @@ package net.bergby.qnomore;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.*;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,19 +21,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 import net.bergby.qnomore.fragments.*;
 import net.bergby.qnomore.helpClasses.JsonParserGetMenus;
+import net.bergby.qnomore.helpClasses.JsonParserPostPurchase;
 import net.bergby.qnomore.services.OrderCountDown;
 import org.json.JSONException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import android.support.v4.app.FragmentManager;
@@ -40,7 +42,8 @@ import android.support.v4.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
-        WarmColdFragment.HotColdButtonChosenListener, RestaurantSelectorFragment.RestaurantItemClickedListener, MenuSelectorFragment.MenuItemClickedListener, CheckOutFragment.CheckOutFragmentInterface
+        WarmColdFragment.HotColdButtonChosenListener, RestaurantSelectorFragment.RestaurantItemClickedListener, MenuSelectorFragment.MenuItemClickedListener,
+        CheckOutFragment.CheckOutFragmentInterface, JsonParserPostPurchase.onResponseCodeRecieved
 {
     // GLOBAL VARIABLES
     private boolean food;
@@ -80,43 +83,60 @@ public class MainActivity extends AppCompatActivity
 
     private void initSidebar()
     {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        String fromNotification = getIntent().getStringExtra("notificationFragment");
 
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        System.out.println(fromNotification);
 
-        // Runs the "Home" fragment
+        //Starts the fragment manager
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        HomeFragment homeFragment = new HomeFragment();
-        fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
-        Bundle bundle = new Bundle();
-        bundle.putString("message", "Welcome!");
-        homeFragment.setArguments(bundle);
-        fragmentTransaction.commit();
+        if (fromNotification != null)
+        {
+            MyOrdersFragment myOrdersFragment = new MyOrdersFragment();
+            fragmentTransaction.replace(R.id.content_main, myOrdersFragment, "HOME");
+            fragmentTransaction.commit();
+        }
+        else
+        {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        // Selects the "Home" navigation-drawer item
-        navigationView.setCheckedItem(R.id.nav_home);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
 
-        // Listener for the fab button
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startPurchase();
-                fab.setVisibility(View.GONE);
-                navigationView.setCheckedItem(R.id.menu_none);
-            }
-        });
+            final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
 
+            // Runs the "Home" fragment
+
+            HomeFragment homeFragment = new HomeFragment();
+            fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
+            Bundle bundle = new Bundle();
+            bundle.putString("message", "Welcome!");
+            homeFragment.setArguments(bundle);
+            fragmentTransaction.commit();
+
+            // Selects the "Home" navigation-drawer item
+            navigationView.setCheckedItem(R.id.nav_home);
+
+            // Listener for the fab button
+            fab.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    startPurchase();
+                    fab.setVisibility(View.GONE);
+                    navigationView.setCheckedItem(R.id.menu_none);
+                }
+            });
+        }
     }
 
     private void startPurchase()
@@ -273,7 +293,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onHotColdButtonSelected(int button) throws JSONException, IOException, ExecutionException, InterruptedException
+    public void onHotColdButtonSelected(int button)
     {
         // Fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -290,9 +310,12 @@ public class MainActivity extends AppCompatActivity
         Button = 4: Cold
          */
 
+        try
+        {
         switch (button)
         {
             case 3:
+
                 jsonParser = new JsonParserGetMenus("https://server.bergby.net/QnoMoreAPI/api/menus", true, false, food, drinks);
                 restaurantList = jsonParser.getRestaurantNames();
                 bundle = new Bundle();
@@ -310,7 +333,13 @@ public class MainActivity extends AppCompatActivity
 
                 fragmentTransaction.replace(R.id.content_main, restaurantSelectorFragment, "SECOND");
                 break;
+            }
         }
+        catch (JSONException | InterruptedException | ExecutionException | IOException e)
+        {
+            Toast.makeText(this, "Server is offline! Please try again later", Toast.LENGTH_LONG).show();
+        }
+
 
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -338,7 +367,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onMenuItemClicked(double sum, ArrayList<String> items)
+    public void onMenuItemClicked(double sum, ArrayList<String> items, String restaurants)
     {
 
         Bundle bundle;
@@ -356,6 +385,7 @@ public class MainActivity extends AppCompatActivity
             bundle = new Bundle();
             bundle.putString("sum", stringSum);
             bundle.putStringArrayList("items", items);
+            bundle.putString("restaurant", restaurants);
             checkOutFragment.setArguments(bundle);
 
             fragmentTransaction.replace(R.id.content_main, checkOutFragment, "SECOND");
@@ -372,13 +402,35 @@ public class MainActivity extends AppCompatActivity
     private double sumGlobal;
 
     @Override
-    public void onCheckOutFragmentAction(ArrayList<String> items, double sum)
+    public void onCheckOutFragmentAction(ArrayList<String> items, double sum, String restaurant) throws InterruptedException, ExecutionException, JSONException, IOException
     {
+
+        itemsGlobal = items;
+        sumGlobal = sum;
 
         // Get all keys from preferences, and removes all "quantity" keys
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         Map<String, ?> allSharedPrefs = preferences.getAll();
+
+        // To create the right way to give current date to database
+        Date dateNow = new Date();
+        String date = String.valueOf(dateNow);
+
+        // To create a random confirmation code
+        String confirmationCode = nextSessionId();
+
+        // Create a string with all items
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String s : items)
+        {
+            stringBuilder.append(s);
+            stringBuilder.append("# ");
+        }
+
+        // Collects the userID
+        String userId = preferences.getString("net.bergby.qnomore.googleId", null);
+
         for (Map.Entry<String, ?> entry : allSharedPrefs.entrySet())
         {
             if (entry.getKey().contains("quantity"))
@@ -388,25 +440,47 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        itemsGlobal = items;
-        sumGlobal = sum;
-        System.out.println(items + "  " + sum);
-        Intent orderCountDownService = new Intent(this, OrderCountDown.class);
-        orderCountDownService.putExtra("countDownTime", 10000);
-        startService(orderCountDownService);
+        JsonParserPostPurchase jsonParserPostPurchase = new JsonParserPostPurchase(
+                userId,
+                "https://server.bergby.net/QnoMoreAPI/api/purchases",
+                date,
+                confirmationCode,
+                sum,
+                stringBuilder.toString(),
+                restaurant,
+                this
+        );
+    }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    @Override
+    public void onResponseCodeRecievedMethod(int code)
+    {
+        if (code == 200)
+        {
+            System.out.println("Code is 200!");
 
-        HomeFragment homeFragment = new HomeFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("message", "Thank you for your order!");
-        homeFragment.setArguments(bundle);
+            System.out.println(itemsGlobal + "  " + sumGlobal);
+            Intent orderCountDownService = new Intent(this, OrderCountDown.class);
+            orderCountDownService.putExtra("countDownTime", 10000);
+            startService(orderCountDownService);
 
-        fragmentTransaction.replace(R.id.content_main, homeFragment, "LOCKED");
-        fragmentTransaction.commit();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        Log.i("Order", "Started service");
+            HomeFragment homeFragment = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("message", "Thank you for your order!");
+            homeFragment.setArguments(bundle);
+
+            fragmentTransaction.replace(R.id.content_main, homeFragment, "LOCKED");
+            fragmentTransaction.commit();
+
+            Log.i("Order", "Started service");
+        }
+        else
+        {
+            System.out.println("ResponseCode: " + code);
+        }
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver()
@@ -446,9 +520,16 @@ public class MainActivity extends AppCompatActivity
                 // Removes the old notification, and changes it to the pickup notification
                 notificationManager.cancel(1);
 
+                // Sets intent to the notification
+                Intent notificationIntent = new Intent(this, MainActivity.class);
+                notificationIntent.putExtra("notificationFragment", "fromIntent");
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                        notificationIntent, 0);
+
                 android.support.v4.app.NotificationCompat.Builder nBuilder =
                         new NotificationCompat.Builder(this)
                                 .setSmallIcon(icon)
+                                .setContentIntent(pendingIntent)
                                 .setContentTitle(title)
                                 .setContentText(content)
                                 .setDefaults(Notification.DEFAULT_ALL)
@@ -503,5 +584,10 @@ public class MainActivity extends AppCompatActivity
     {
         super.onDestroy();
         stopService(new Intent(this, OrderCountDown.class));
+    }
+
+    public String nextSessionId() {
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
     }
 }

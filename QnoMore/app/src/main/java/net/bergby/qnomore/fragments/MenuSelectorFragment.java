@@ -24,11 +24,11 @@ import java.util.List;
 public class MenuSelectorFragment extends Fragment implements View.OnClickListener
 {
 
-    private String restaurant;
     private JSONObject restaurantObject;
     private MenuItemClickedListener mCallback;
     private double sumFroMAdapter;
     private ArrayList<String> itemList = new ArrayList<>();
+    private String restaurantToActivity;
 
     public MenuSelectorFragment()
     {
@@ -47,7 +47,7 @@ public class MenuSelectorFragment extends Fragment implements View.OnClickListen
 
     public interface MenuItemClickedListener
     {
-        void onMenuItemClicked(double sum, ArrayList<String> items);
+        void onMenuItemClicked(double sum, ArrayList<String> items, String restaurantName);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MenuSelectorFragment extends Fragment implements View.OnClickListen
         Button continueButton = (Button) view.findViewById(R.id.checkoutContBut);
         continueButton.setOnClickListener(this);
 
-        restaurant = getArguments().getString("specificRestaurant");
+        String restaurant = getArguments().getString("specificRestaurant");
         try
         {
             restaurantObject = new JSONObject(restaurant);
@@ -70,7 +70,7 @@ public class MenuSelectorFragment extends Fragment implements View.OnClickListen
             e.printStackTrace();
         }
 
-        System.out.println(restaurantObject.optString("_id"));
+        restaurantToActivity = restaurantObject.optString("restaurant_name");
 
         JSONObject jsonMenu = null;
         try
@@ -109,7 +109,7 @@ public class MenuSelectorFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View view)
     {
-        mCallback.onMenuItemClicked(sumFroMAdapter, itemList);
+        mCallback.onMenuItemClicked(sumFroMAdapter, itemList, restaurantToActivity);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class MenuSelectorFragment extends Fragment implements View.OnClickListen
 
         try
         {
-            mCallback = (MenuItemClickedListener ) context;
+            mCallback = (MenuItemClickedListener) context;
         }
         catch (ClassCastException e)
         {
