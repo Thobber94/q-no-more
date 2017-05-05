@@ -34,9 +34,8 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity
@@ -54,6 +53,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView = navigationView.getHeaderView(0);
 
@@ -61,10 +62,9 @@ public class MainActivity extends AppCompatActivity
         TextView nav_email = (TextView) hView.findViewById(R.id.nav_view_email);
         CircleImageView nav_userImage = (CircleImageView) hView.findViewById(R.id.profile_image);
 
-        Intent intent = getIntent();
-        String email = intent.getStringExtra(LoginActivity.nav_email);
-        String user = intent.getStringExtra(LoginActivity.nav_user);
-        String image = intent.getStringExtra(LoginActivity.nav_userImage);
+        String email = preferences.getString("nav_email", null);
+        String user = preferences.getString("nav_user", null);
+        String image = preferences.getString("nav_userImage", null);
 
         nav_email.setText(email);
         nav_user.setText(user);
@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity
 
         food = false;
         drinks = false;
+
+        System.out.println("onCreate run. " + email + ", " + user);
 
         initSidebar();
     }
@@ -417,8 +419,11 @@ public class MainActivity extends AppCompatActivity
         Map<String, ?> allSharedPrefs = preferences.getAll();
 
         // To create the right way to give current date to database
-        Date dateNow = new Date();
-        String date = String.valueOf(dateNow);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateNow = new SimpleDateFormat("dd/MM/yyyy HH:mm (z)", Locale.getDefault());
+        String date = dateNow.format(calendar.getTime());
+
+        System.out.println(calendar);
 
         // To create a random confirmation code
         String confirmationCode = nextSessionId();

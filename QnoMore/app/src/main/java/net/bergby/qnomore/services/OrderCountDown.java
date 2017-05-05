@@ -125,6 +125,7 @@ public class OrderCountDown extends Service
                                 .setSmallIcon(icon)
                                 .setContentTitle(title)
                                 .setContentText(content)
+                                .setAutoCancel(true)
                                 .setDefaults(Notification.DEFAULT_ALL)
                                 .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle()
                                         .bigText(expandedContent));
@@ -143,6 +144,7 @@ public class OrderCountDown extends Service
                                 PendingIntent.FLAG_UPDATE_CURRENT
                         );
                 nBuilder.setContentIntent(resultPendingIntent);
+
 
                 notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 

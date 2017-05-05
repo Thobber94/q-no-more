@@ -196,9 +196,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 mProgressDialog.dismiss();
             }
             Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(nav_user, nav_user);
-            intent.putExtra(nav_email, nav_email);
-            intent.putExtra(nav_userImage, nav_userImage);
+
+            editor.putString("nav_user", nav_user).commit();
+            editor.putString("nav_email", nav_email).commit();
+            editor.putString("nav_userImage", nav_userImage).commit();
+
             startActivity(intent);
             finish();
         }

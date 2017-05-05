@@ -1,13 +1,54 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="net.bergby.qnomore.fragments.MyOrdersFragment">
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:descendantFocusability="blocksDescendants">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"/>
+            android:weightSum="1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
-</FrameLayout>
+        <ListView
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/orderListView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.98"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:weightSum="1"
+                android:layout_weight="0.08"
+                android:layout_marginTop="10dp">
+            <TextView
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sum_all_orders"
+                    android:textSize="24sp"
+                    android:textColor="@android:color/black"/>
+
+            <TextView
+                    android:id="@+id/totalSum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="€0"
+                    android:textSize="24sp"
+                    android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

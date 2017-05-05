@@ -19,6 +19,10 @@
       "type": "string",
       "required": true
     },
+    "additional_information": {
+      "type": "string",
+      "required": false
+    },
     "purchase_sum": {
       "type": "number",
       "required": true
