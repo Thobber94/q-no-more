@@ -433,7 +433,7 @@ public class MainActivity extends AppCompatActivity
         for (String s : items)
         {
             stringBuilder.append(s);
-            stringBuilder.append("# ");
+            stringBuilder.append("#");
         }
 
         // Collects the userID

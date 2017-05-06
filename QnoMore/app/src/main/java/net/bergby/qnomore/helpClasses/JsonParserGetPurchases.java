@@ -27,13 +27,11 @@ import java.util.concurrent.ExecutionException;
 public class JsonParserGetPurchases
 {
 
-    private String thisUserID;
     private Double total_sum = 0.0;
     private ArrayList<HashMap<String, String>> purchaseList = new ArrayList<>();
 
     public JsonParserGetPurchases(String url, String thisUserID) throws JSONException, IOException, ExecutionException, InterruptedException, ParseException
     {
-        this.thisUserID = thisUserID;
         // Calls the method to start the process
         getJsonValue(url, thisUserID);
     }
@@ -42,9 +40,15 @@ public class JsonParserGetPurchases
     private void getJsonValue(String url, String thisUserID) throws JSONException, IOException, ExecutionException, InterruptedException, ParseException
     {
 
-        JSONArray jsonArray;
+        JSONArray jsonArrayForward;
         String json = String.valueOf(new jsonAsync().execute(url).get());
-        jsonArray = new JSONArray(json);
+        jsonArrayForward = new JSONArray(json);
+
+        JSONArray jsonArray = new JSONArray();
+        for (int i = jsonArrayForward.length() - 1; i >= 0; i--)
+        {
+            jsonArray.put(jsonArrayForward.get(i));
+        }
 
         for (int i = 0; i < jsonArray.length(); i++)
         {
@@ -64,7 +68,7 @@ public class JsonParserGetPurchases
 
                 tempPurchaseObject.put("restaurant_name", restaurant_name);
                 tempPurchaseObject.put("purchase_date", purchase_date_unformatted);
-                tempPurchaseObject.put("conformation_code", confirmationCode);
+                tempPurchaseObject.put("confirmation_code", confirmationCode);
                 tempPurchaseObject.put("purchase_sum", purchase_sum);
                 tempPurchaseObject.put("total_sum", String.valueOf(total_sum));
                 tempPurchaseObject.put("purchase_items", purchase_items);
