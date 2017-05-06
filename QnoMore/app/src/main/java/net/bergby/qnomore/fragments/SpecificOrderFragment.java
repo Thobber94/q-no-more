@@ -19,14 +19,6 @@ import java.util.HashMap;
 public class SpecificOrderFragment extends Fragment
 {
 
-    private View view;
-    private HashMap order = new HashMap<>();
-    private String restaurantName;
-    private String orderItems;
-    private String sum;
-    private String orderDate;
-    private String confirmationCode;
-
     public SpecificOrderFragment()
     {
         // Required empty public constructor
@@ -38,7 +30,7 @@ public class SpecificOrderFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_specific_order, container, false);
+        View view = inflater.inflate(R.layout.fragment_specific_order, container, false);
 
         TextView restaurantNameTextView = (TextView) view.findViewById(R.id.specificOrderRestaurant);
         TextView purchaseItemsTextView = (TextView) view.findViewById(R.id.specificOrderItems);
@@ -47,13 +39,13 @@ public class SpecificOrderFragment extends Fragment
         TextView orderDateTextView = (TextView) view.findViewById(R.id.specificOrderDate);
         TextView confirmationCodeTextView = (TextView) view.findViewById(R.id.specificOrderConfCodeExtra);
 
-        order = (HashMap) getArguments().getSerializable("order");
+        HashMap order = (HashMap) getArguments().getSerializable("order");
 
-        orderItems = String.valueOf(order.get("purchase_items"));
-        restaurantName = String.valueOf(order.get("restaurant_name"));
-        confirmationCode = String.valueOf(order.get("confirmation_code"));
-        sum = String.valueOf(order.get("purchase_sum"));
-        orderDate = String.valueOf(order.get("purchase_date"));
+        String orderItems = String.valueOf(order.get("purchase_items"));
+        String restaurantName = String.valueOf(order.get("restaurant_name"));
+        String confirmationCode = String.valueOf(order.get("confirmation_code"));
+        String sum = String.valueOf(order.get("purchase_sum"));
+        String orderDate = String.valueOf(order.get("purchase_date"));
 
         Bitmap bitmap = QRCode.from(confirmationCode).bitmap();
         orderItems = orderItems.replace("#", "\n");
