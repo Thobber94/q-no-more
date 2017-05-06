@@ -53,8 +53,6 @@ public class JsonParserGetPurchases
             String user_id = (String) mJsonObject.get("user_id");
             if (user_id.hashCode() == thisUserID.hashCode())
             {
-                System.out.println("Correct user!");
-
                 HashMap<String, String> tempPurchaseObject = new HashMap<>();
 
                 String restaurant_name = (String) mJsonObject.get("restaurant_name");
@@ -73,10 +71,6 @@ public class JsonParserGetPurchases
 
                 purchaseList.add(tempPurchaseObject);
 
-            }
-            else
-            {
-                System.out.println("Wrong user!");
             }
         }
     }

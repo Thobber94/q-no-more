@@ -35,4 +35,5 @@
     <string name="euroSymbol">€%1$s</string>
     <string name="my_orders">My Orders</string>
     <string name="sum_all_orders">Sum all orders:</string>
+    <string name="specificOrderItemExample">10 x Pepperoni Pizza</string>
 </resources>

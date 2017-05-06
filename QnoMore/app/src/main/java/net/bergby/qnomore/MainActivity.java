@@ -41,7 +41,7 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
         WarmColdFragment.HotColdButtonChosenListener, RestaurantSelectorFragment.RestaurantItemClickedListener, MenuSelectorFragment.MenuItemClickedListener,
-        CheckOutFragment.CheckOutFragmentInterface, JsonParserPostPurchase.onResponseCodeRecieved
+        CheckOutFragment.CheckOutFragmentInterface, JsonParserPostPurchase.onResponseCodeRecieved, MyOrdersFragment.OrderClickListener
 {
     // GLOBAL VARIABLES
     private boolean food;
@@ -162,12 +162,12 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         }
         // If it is anything in the backstack
-        else if (backStackEntryCount == 0)
+        else if (backStackEntryCount != 0)
         {
             // If the current fragment don't got the tag "locked", go back
             if (!"LOCKED".equals(currentFragment.getTag()))
             {
-                getFragmentManager().popBackStack();
+                getSupportFragmentManager().popBackStack();
             }
             else
             {
@@ -507,9 +507,12 @@ public class MainActivity extends AppCompatActivity
         System.out.println("restarted!");
 
         Bundle extras = getIntent().getExtras();
+        String fromNotification = null;
 
-        String fromNotification = extras.getString("notificationFragment");
-        System.out.println("From notification: " + fromNotification);
+        if (extras != null)
+        {
+            extras.getString("notificationFragment");
+        }
 
         //Starts the fragment manager
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -536,5 +539,21 @@ public class MainActivity extends AppCompatActivity
     private String nextSessionId() {
         SecureRandom random = new SecureRandom();
         return new BigInteger(130, random).toString(32);
+    }
+
+    @Override
+    public void onOrderClicked(HashMap<String, String> order)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order", order);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        SpecificOrderFragment specificOrderFragment = new SpecificOrderFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        specificOrderFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_main, specificOrderFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

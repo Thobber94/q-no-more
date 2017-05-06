@@ -1,6 +1,7 @@
 package net.bergby.qnomore.fragments;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -22,13 +23,17 @@ public class MyOrdersFragment extends Fragment
 {
 
     private HashMap<String, String> selectedOrderList;
+    private OrderClickListener mCallback;
 
     public MyOrdersFragment()
     {
         // Required empty public constructor
     }
 
-    
+    public interface OrderClickListener
+    {
+        void onOrderClicked(HashMap<String, String> order);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +78,7 @@ public class MyOrdersFragment extends Fragment
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
                 {
                     selectedOrderList = jsonParserGetPurchases.getPurchaseList().get(i);
+                    mCallback.onOrderClicked(selectedOrderList);
                 }
             });
 
@@ -81,14 +87,24 @@ public class MyOrdersFragment extends Fragment
             e.printStackTrace();
         }
 
-        /*
-        Bitmap bitmap = QRCode.from("Hello world! \n \n This is a test.").bitmap();
-        ImageView imageView = (ImageView) view.findViewById(R.id.testImageVIew);
-        imageView.setImageBitmap(bitmap);
-        */
-
         // Inflate the layout for this fragment
         return view;
     }
 
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+
+        try
+        {
+            mCallback = (OrderClickListener) context;
+        }
+        catch (ClassCastException e)
+        {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnOrderClickedListener");
+        }
+
+    }
 }
