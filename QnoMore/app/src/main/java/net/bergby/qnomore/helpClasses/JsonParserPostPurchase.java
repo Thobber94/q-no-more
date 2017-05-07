@@ -35,7 +35,7 @@ public class JsonParserPostPurchase
 
     public interface onResponseCodeRecieved
     {
-        void onResponseCodeRecievedMethod(int code);
+        void onResponseCodeReceivedMethod(int code);
     }
 
     public JsonParserPostPurchase(String userId, String url, String date, String confirmationCode, double sum, String items, String restaurant, onResponseCodeRecieved mCallback, boolean isSold) throws JSONException, IOException, ExecutionException, InterruptedException
@@ -109,7 +109,7 @@ public class JsonParserPostPurchase
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-            mCallback.onResponseCodeRecievedMethod(response);
+            mCallback.onResponseCodeReceivedMethod(response);
         }
     }
 

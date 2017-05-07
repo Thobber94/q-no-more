@@ -17,16 +17,6 @@
             android:layout_centerHorizontal="true"
             android:textSize="36sp"/>
 
-    <TextView
-            android:text="Date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:id="@+id/specificOrderDate"
-            android:layout_below="@+id/specificOrderRestaurant"
-            android:layout_centerHorizontal="true"
-            android:textSize="18sp"/>
-
     <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="120dp"
@@ -45,16 +35,6 @@
 
     </ScrollView>
 
-    <TextView
-            android:text="Sum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/specificOrderDate"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="21dp"
-            android:id="@+id/specificOrderSum"
-            android:textSize="18sp"/>
-
     <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -72,5 +52,35 @@
             android:layout_alignBottom="@+id/specificItemQr"
             android:layout_centerHorizontal="true"
             android:id="@+id/specificOrderConfCodeExtra"/>
+
+    <TextView
+            android:text="Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:id="@+id/specificOrderDate"
+            android:textSize="18sp"
+            android:layout_below="@+id/specificOrderRestaurant"
+            android:layout_alignRight="@+id/specificOrderSum"
+            android:layout_alignEnd="@+id/specificOrderSum"/>
+
+    <TextView
+            android:text="Sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:id="@+id/specificOrderSum"
+            android:textSize="18sp"
+            android:layout_below="@+id/specificOrderDate"
+            android:layout_centerHorizontal="true"/>
+
+    <TextView
+            android:text="In Progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/specificOrderSum"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="19dp"
+            android:id="@+id/specificOrderIsSold"/>
 
 </RelativeLayout>

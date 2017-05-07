@@ -2,6 +2,7 @@ package net.bergby.qnomore.fragments;
 
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -38,9 +39,11 @@ public class SpecificOrderFragment extends Fragment
         TextView sumTextView = (TextView) view.findViewById(R.id.specificOrderSum);
         TextView orderDateTextView = (TextView) view.findViewById(R.id.specificOrderDate);
         TextView confirmationCodeTextView = (TextView) view.findViewById(R.id.specificOrderConfCodeExtra);
+        TextView isSoldTextView = (TextView) view.findViewById(R.id.specificOrderIsSold);
 
         HashMap order = (HashMap) getArguments().getSerializable("order");
 
+        Boolean isSold = Boolean.valueOf(String.valueOf(order.get("is_sold")));
         String orderItems = String.valueOf(order.get("purchase_items"));
         String restaurantName = String.valueOf(order.get("restaurant_name"));
         String confirmationCode = String.valueOf(order.get("confirmation_code"));
@@ -49,6 +52,17 @@ public class SpecificOrderFragment extends Fragment
 
         Bitmap bitmap = QRCode.from(confirmationCode).bitmap();
         orderItems = orderItems.replace("#", "\n");
+
+        if (isSold)
+        {
+            isSoldTextView.setText(R.string.delivered_text);
+            isSoldTextView.setTextColor(Color.parseColor("#FF8100"));
+        }
+        else
+        {
+            isSoldTextView.setText(R.string.in_progress);
+            isSoldTextView.setTextColor(Color.parseColor("#57E310"));
+        }
 
         imageViewQr.setImageBitmap(bitmap);
         restaurantNameTextView.setText(restaurantName);

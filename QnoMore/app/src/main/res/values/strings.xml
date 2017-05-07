@@ -36,4 +36,6 @@
     <string name="my_orders">My Orders</string>
     <string name="sum_all_orders">Sum all orders:</string>
     <string name="specificOrderItemExample">10 x Pepperoni Pizza</string>
+    <string name="delivered_text">Delivered</string>
+    <string name="in_progress">In Progress</string>
 </resources>

@@ -448,7 +448,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        JsonParserPostPurchase jsonParserPostPurchase = new JsonParserPostPurchase(
+        new JsonParserPostPurchase(
                 userId,
                 "https://server.bergby.net/QnoMoreAPI/api/purchases",
                 date,
@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onResponseCodeRecievedMethod(int code)
+    public void onResponseCodeReceivedMethod(int code)
     {
         if (code == 200)
         {

@@ -16,6 +16,9 @@
     "restaurant_name": {
       "type": "string",
       "required": true
+    },
+    "location": {
+      "type": "object"
     }
   },
   "validations": [],

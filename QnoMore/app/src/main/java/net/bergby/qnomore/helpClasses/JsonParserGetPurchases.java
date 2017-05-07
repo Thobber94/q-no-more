@@ -59,7 +59,6 @@ public class JsonParserGetPurchases
             if (user_id.hashCode() == thisUserID.hashCode())
             {
                 HashMap<String, String> tempPurchaseObject = new HashMap<>();
-                HashMap<String, String> tempPurchaseObjectHistory = new HashMap<>();
 
                 Boolean isSold = (Boolean) mJsonObject.get("is_sold");
                 String restaurant_name = (String) mJsonObject.get("restaurant_name");
@@ -69,28 +68,21 @@ public class JsonParserGetPurchases
                 total_sum = total_sum + Double.parseDouble(purchase_sum);
                 String purchase_items = (String) mJsonObject.get("purchase_items");
 
+                tempPurchaseObject.put("is_sold", String.valueOf(isSold));
+                tempPurchaseObject.put("restaurant_name", restaurant_name);
+                tempPurchaseObject.put("purchase_date", purchase_date_unformatted);
+                tempPurchaseObject.put("confirmation_code", confirmationCode);
+                tempPurchaseObject.put("purchase_sum", purchase_sum);
+                tempPurchaseObject.put("total_sum", String.valueOf(total_sum));
+                tempPurchaseObject.put("purchase_items", purchase_items);
+
                 if (!isSold)
                 {
-                    tempPurchaseObject.put("restaurant_name", restaurant_name);
-                    tempPurchaseObject.put("purchase_date", purchase_date_unformatted);
-                    tempPurchaseObject.put("confirmation_code", confirmationCode);
-                    tempPurchaseObject.put("purchase_sum", purchase_sum);
-                    tempPurchaseObject.put("total_sum", String.valueOf(total_sum));
-                    tempPurchaseObject.put("purchase_items", purchase_items);
-
                     purchaseList.add(tempPurchaseObject);
                 }
                 else
                 {
-
-                    tempPurchaseObjectHistory.put("restaurant_name", restaurant_name);
-                    tempPurchaseObjectHistory.put("purchase_date", purchase_date_unformatted);
-                    tempPurchaseObjectHistory.put("confirmation_code", confirmationCode);
-                    tempPurchaseObjectHistory.put("purchase_sum", purchase_sum);
-                    tempPurchaseObjectHistory.put("total_sum", String.valueOf(total_sum));
-                    tempPurchaseObjectHistory.put("purchase_items", purchase_items);
-
-                    purchaseListHistory.add(tempPurchaseObjectHistory);
+                    purchaseListHistory.add(tempPurchaseObject);
                 }
             }
         }
