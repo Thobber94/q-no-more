@@ -34,7 +34,7 @@ public class MyOrdersFragment extends Fragment
 
     public interface OrderClickListener
     {
-        void onOrderClicked(HashMap<String, String> order);
+        void onOrderClicked(HashMap<String, String> order) throws InterruptedException, ExecutionException, JSONException;
     }
 
     @Override
@@ -132,12 +132,24 @@ public class MyOrdersFragment extends Fragment
                     if (tabPosition == 0)
                     {
                         selectedOrderList = jsonParserGetPurchases.getPurchaseList().get(i);
-                        mCallback.onOrderClicked(selectedOrderList);
+                        try
+                        {
+                            mCallback.onOrderClicked(selectedOrderList);
+                        } catch (InterruptedException | JSONException | ExecutionException e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                     else if (tabPosition == 1)
                     {
                         selectedOrderList = jsonParserGetPurchases.getPurchaseListHistory().get(i);
-                        mCallback.onOrderClicked(selectedOrderList);
+                        try
+                        {
+                            mCallback.onOrderClicked(selectedOrderList);
+                        } catch (InterruptedException | ExecutionException | JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });

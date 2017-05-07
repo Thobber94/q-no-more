@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 import net.bergby.qnomore.fragments.*;
+import net.bergby.qnomore.helpClasses.JsonParserGetLocation;
 import net.bergby.qnomore.helpClasses.JsonParserGetMenus;
 import net.bergby.qnomore.helpClasses.JsonParserPostPurchase;
 import net.bergby.qnomore.services.OrderCountDown;
@@ -235,7 +236,6 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_account_circle)
         {
-            Log.i("Info", "Account clicked");
             // Fragment handling
             EditProfileFragment editProfileFragment = new EditProfileFragment();
 
@@ -245,9 +245,9 @@ public class MainActivity extends AppCompatActivity
                 findViewById(R.id.fab).setVisibility(View.GONE);
             }
         }
-        else if (id == R.id.nav_share)
+        else if (id == R.id.nav_locations)
         {
-            Log.i("Info", "Share clicked");
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -543,7 +543,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onOrderClicked(HashMap<String, String> order)
+    public void onOrderClicked(HashMap<String, String> order) throws InterruptedException, ExecutionException, JSONException
     {
         Bundle bundle = new Bundle();
         bundle.putSerializable("order", order);
@@ -556,5 +556,8 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.content_main, specificOrderFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+
+        JsonParserGetLocation jsonParserGetLocation = new JsonParserGetLocation("https://server.bergby.net/QnoMoreAPI/api/menus");
+
     }
 }

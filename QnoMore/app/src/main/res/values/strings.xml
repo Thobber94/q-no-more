@@ -38,4 +38,5 @@
     <string name="specificOrderItemExample">10 x Pepperoni Pizza</string>
     <string name="delivered_text">Delivered</string>
     <string name="in_progress">In Progress</string>
+    <string name="locations">Locations</string>
 </resources>
