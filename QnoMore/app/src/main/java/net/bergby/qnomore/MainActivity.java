@@ -456,7 +456,8 @@ public class MainActivity extends AppCompatActivity
                 sum,
                 stringBuilder.toString(),
                 restaurant,
-                this
+                this,
+                false
         );
     }
 

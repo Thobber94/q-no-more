@@ -30,6 +30,10 @@
     "purchase_items": {
       "type": "string",
       "required": true
+    },
+    "is_sold": {
+      "type": "boolean",
+      "required": true
     }
   },
   "validations": [],

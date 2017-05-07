@@ -29,6 +29,7 @@ public class JsonParserGetPurchases
 
     private Double total_sum = 0.0;
     private ArrayList<HashMap<String, String>> purchaseList = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> purchaseListHistory = new ArrayList<>();
 
     public JsonParserGetPurchases(String url, String thisUserID) throws JSONException, IOException, ExecutionException, InterruptedException, ParseException
     {
@@ -58,7 +59,9 @@ public class JsonParserGetPurchases
             if (user_id.hashCode() == thisUserID.hashCode())
             {
                 HashMap<String, String> tempPurchaseObject = new HashMap<>();
+                HashMap<String, String> tempPurchaseObjectHistory = new HashMap<>();
 
+                Boolean isSold = (Boolean) mJsonObject.get("is_sold");
                 String restaurant_name = (String) mJsonObject.get("restaurant_name");
                 String purchase_date_unformatted = (String) mJsonObject.get("purchase_date");
                 String confirmationCode = (String) mJsonObject.get("confirmation_code");
@@ -66,15 +69,29 @@ public class JsonParserGetPurchases
                 total_sum = total_sum + Double.parseDouble(purchase_sum);
                 String purchase_items = (String) mJsonObject.get("purchase_items");
 
-                tempPurchaseObject.put("restaurant_name", restaurant_name);
-                tempPurchaseObject.put("purchase_date", purchase_date_unformatted);
-                tempPurchaseObject.put("confirmation_code", confirmationCode);
-                tempPurchaseObject.put("purchase_sum", purchase_sum);
-                tempPurchaseObject.put("total_sum", String.valueOf(total_sum));
-                tempPurchaseObject.put("purchase_items", purchase_items);
+                if (!isSold)
+                {
+                    tempPurchaseObject.put("restaurant_name", restaurant_name);
+                    tempPurchaseObject.put("purchase_date", purchase_date_unformatted);
+                    tempPurchaseObject.put("confirmation_code", confirmationCode);
+                    tempPurchaseObject.put("purchase_sum", purchase_sum);
+                    tempPurchaseObject.put("total_sum", String.valueOf(total_sum));
+                    tempPurchaseObject.put("purchase_items", purchase_items);
 
-                purchaseList.add(tempPurchaseObject);
+                    purchaseList.add(tempPurchaseObject);
+                }
+                else
+                {
 
+                    tempPurchaseObjectHistory.put("restaurant_name", restaurant_name);
+                    tempPurchaseObjectHistory.put("purchase_date", purchase_date_unformatted);
+                    tempPurchaseObjectHistory.put("confirmation_code", confirmationCode);
+                    tempPurchaseObjectHistory.put("purchase_sum", purchase_sum);
+                    tempPurchaseObjectHistory.put("total_sum", String.valueOf(total_sum));
+                    tempPurchaseObjectHistory.put("purchase_items", purchase_items);
+
+                    purchaseListHistory.add(tempPurchaseObjectHistory);
+                }
             }
         }
     }
@@ -131,6 +148,11 @@ public class JsonParserGetPurchases
     public Double getTotal_sum()
     {
         return total_sum;
+    }
+
+    public ArrayList<HashMap<String, String>> getPurchaseListHistory()
+    {
+        return purchaseListHistory;
     }
 
     public ArrayList<HashMap<String, String>> getPurchaseList()

@@ -31,13 +31,14 @@ public class JsonParserPostPurchase
     private int response;
     private onResponseCodeRecieved mCallback;
     private String restaurant;
+    private boolean isSold;
 
     public interface onResponseCodeRecieved
     {
         void onResponseCodeRecievedMethod(int code);
     }
 
-    public JsonParserPostPurchase(String userId, String url, String date, String confirmationCode, double sum, String items, String restaurant, onResponseCodeRecieved mCallback) throws JSONException, IOException, ExecutionException, InterruptedException
+    public JsonParserPostPurchase(String userId, String url, String date, String confirmationCode, double sum, String items, String restaurant, onResponseCodeRecieved mCallback, boolean isSold) throws JSONException, IOException, ExecutionException, InterruptedException
     {
         this.userId = userId;
         this.confirmationCode = confirmationCode;
@@ -47,6 +48,7 @@ public class JsonParserPostPurchase
         this.serverUrl = url;
         this.mCallback = mCallback;
         this.restaurant = restaurant;
+        this.isSold = isSold;
         // Calls the method to start the process
         new jsonAsync().execute();
     }
@@ -67,6 +69,7 @@ public class JsonParserPostPurchase
             ((ObjectNode) rootNode).put("confirmation_code", confirmationCode);
             ((ObjectNode) rootNode).put("purchase_sum", sum);
             ((ObjectNode) rootNode).put("purchase_items", items);
+            ((ObjectNode) rootNode).put("is_sold", isSold);
 
             jsonStringMethod = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
             return jsonStringMethod;
