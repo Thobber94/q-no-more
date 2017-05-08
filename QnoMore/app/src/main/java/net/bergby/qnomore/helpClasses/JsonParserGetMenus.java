@@ -28,8 +28,6 @@ public class JsonParserGetMenus
     private boolean cold;
     private boolean food;
     private boolean drink;
-    private String longitude;
-    private String altitude;
 
 
     public JsonParserGetMenus(String url, boolean warm, boolean cold, boolean food, boolean drink) throws JSONException, IOException, ExecutionException, InterruptedException

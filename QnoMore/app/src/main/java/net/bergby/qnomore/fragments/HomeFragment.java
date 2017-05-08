@@ -23,6 +23,9 @@ public class HomeFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view;
+
+        getActivity().setTitle("Home");
+
         view = inflater.inflate(R.layout.home_main, container, false);
 
         String message = getArguments().getString("message");
