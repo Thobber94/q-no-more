@@ -247,7 +247,26 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_locations)
         {
+            JsonParserGetLocation jsonParserGetLocation = null;
+            try
+            {
+                jsonParserGetLocation = new JsonParserGetLocation("https://server.bergby.net/QnoMoreAPI/api/menus");
+            } catch (ExecutionException | InterruptedException | JSONException e)
+            {
+                e.printStackTrace();
+            }
 
+            LocationFragment locationFragment = new LocationFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("location_data" ,jsonParserGetLocation.getLocationData());
+            locationFragment.setArguments(bundle);
+
+            fragmentTransaction.replace(R.id.content_main, locationFragment, "LOCKED");
+        }
+
+        if (findViewById(R.id.fab).getVisibility() == View.VISIBLE)
+        {
+            findViewById(R.id.fab).setVisibility(View.GONE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -556,8 +575,5 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.content_main, specificOrderFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-
-        JsonParserGetLocation jsonParserGetLocation = new JsonParserGetLocation("https://server.bergby.net/QnoMoreAPI/api/menus");
-
     }
 }
