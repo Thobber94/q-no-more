@@ -42,8 +42,7 @@
             android:id="@+id/specificItemQr"
             android:layout_below="@+id/scrollViewSpecificItem"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginTop="25dp"/>
 
     <TextView
             android:text="ConfirmationCode"
@@ -62,7 +61,8 @@
             android:textSize="18sp"
             android:layout_below="@+id/specificOrderRestaurant"
             android:layout_alignRight="@+id/specificOrderSum"
-            android:layout_alignEnd="@+id/specificOrderSum"/>
+            android:layout_alignEnd="@+id/specificOrderSum"
+            android:layout_centerHorizontal="true"/>
 
     <TextView
             android:text="Sum"
@@ -82,5 +82,14 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="19dp"
             android:id="@+id/specificOrderIsSold"/>
+
+    <Button
+            android:text="SEND WITH NFC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/scrollViewSpecificItem"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="110dp"
+            android:id="@+id/nfcButton"/>
 
 </RelativeLayout>

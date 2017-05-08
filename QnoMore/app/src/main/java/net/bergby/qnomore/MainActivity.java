@@ -76,8 +76,6 @@ public class MainActivity extends AppCompatActivity
         food = false;
         drinks = false;
 
-        System.out.println("onCreate run. " + email + ", " + user);
-
         initSidebar();
     }
 
@@ -247,6 +245,12 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_locations)
         {
+
+            if (findViewById(R.id.fab).getVisibility() == View.VISIBLE)
+            {
+                findViewById(R.id.fab).setVisibility(View.GONE);
+            }
+
             JsonParserGetLocation jsonParserGetLocation = null;
             try
             {
@@ -262,11 +266,6 @@ public class MainActivity extends AppCompatActivity
             locationFragment.setArguments(bundle);
 
             fragmentTransaction.replace(R.id.content_main, locationFragment, "LOCKED");
-        }
-
-        if (findViewById(R.id.fab).getVisibility() == View.VISIBLE)
-        {
-            findViewById(R.id.fab).setVisibility(View.GONE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -523,6 +522,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestart()
     {
+        /*
         super.onRestart();
         System.out.println("restarted!");
 
@@ -554,6 +554,14 @@ public class MainActivity extends AppCompatActivity
             homeFragment.setArguments(bundle);
             fragmentTransaction.commit();
         }
+        */
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        System.out.println("Onstop!");
     }
 
     private String nextSessionId() {
