@@ -192,7 +192,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback
                 {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(getContext(), "permission denied", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Permission denied. Please enable location to use all functionality", Toast.LENGTH_LONG).show();
                     map.getUiSettings().setMyLocationButtonEnabled(false);
                     map.setMyLocationEnabled(false);
                     mCallBack.onLocationPermissionGiven(false);

@@ -484,9 +484,6 @@ public class MainActivity extends AppCompatActivity
     {
         if (code == 200)
         {
-            System.out.println("Code is 200!");
-
-            System.out.println(itemsGlobal + "  " + sumGlobal);
             Intent orderCountDownService = new Intent(MainActivity.this, OrderCountDown.class);
             orderCountDownService.putExtra("countDownTime", 30000);
             orderCountDownService.putExtra("items", itemsGlobal);
@@ -503,8 +500,6 @@ public class MainActivity extends AppCompatActivity
 
             fragmentTransaction.replace(R.id.content_main, homeFragment, "LOCKED");
             fragmentTransaction.commit();
-
-            Log.i("Order", "Started service");
         }
         else
         {
@@ -529,7 +524,6 @@ public class MainActivity extends AppCompatActivity
     protected void onStop()
     {
         super.onStop();
-        System.out.println("Onstop!");
     }
 
     private String nextSessionId() {
@@ -558,7 +552,6 @@ public class MainActivity extends AppCompatActivity
     {
         if (permissionGranted)
         {
-            System.out.println("Permission granted!");
             // Fragments
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -580,10 +573,6 @@ public class MainActivity extends AppCompatActivity
 
             fragmentTransaction.replace(R.id.content_main, locationFragment, "LOCKED");
             fragmentTransaction.commit();
-        }
-        else
-        {
-            System.out.println("Permission not granted.");
         }
     }
 }
