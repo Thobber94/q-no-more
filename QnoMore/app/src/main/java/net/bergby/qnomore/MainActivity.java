@@ -42,7 +42,7 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, FoodDrinkFragment.FoodDrinkButtonChosenListener,
         WarmColdFragment.HotColdButtonChosenListener, RestaurantSelectorFragment.RestaurantItemClickedListener, MenuSelectorFragment.MenuItemClickedListener,
-        CheckOutFragment.CheckOutFragmentInterface, JsonParserPostPurchase.onResponseCodeRecieved, MyOrdersFragment.OrderClickListener
+        CheckOutFragment.CheckOutFragmentInterface, JsonParserPostPurchase.onResponseCodeRecieved, MyOrdersFragment.OrderClickListener, LocationFragment.LocationPermissionInterface
 {
     // GLOBAL VARIABLES
     private boolean food;
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity
         // If it is anything in the backstack
         else if (backStackEntryCount != 0)
         {
-            // If the current fragment don't got the tag "locked", go back
+            // If the current fragment doesn't got the tag "locked", go back
             if (!"LOCKED".equals(currentFragment.getTag()))
             {
                 getSupportFragmentManager().popBackStack();
@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity
                 jsonParserGetLocation = new JsonParserGetLocation("https://server.bergby.net/QnoMoreAPI/api/menus");
             } catch (ExecutionException | InterruptedException | JSONException e)
             {
-                e.printStackTrace();
+                Toast.makeText(this, "Server is offline! Please try again later or check your internet connection", Toast.LENGTH_LONG).show();
             }
 
             LocationFragment locationFragment = new LocationFragment();
@@ -360,7 +360,7 @@ public class MainActivity extends AppCompatActivity
         }
         catch (JSONException | InterruptedException | ExecutionException | IOException e)
         {
-            Toast.makeText(this, "Server is offline! Please try again later", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Server is offline! Please try again later or check your internet connection", Toast.LENGTH_LONG).show();
         }
 
 
@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity
 
         Bundle bundle;
 
-        if (sum != 0.0 || items.isEmpty())
+        if (sum != 0.0 || !items.isEmpty())
         {
             String stringSum = String.valueOf(sum);
 
@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity
         }
         else
         {
-            System.out.println("ResponseCode: " + code);
+            Toast.makeText(this, "Something went wrong. Please try again later", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -522,39 +522,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestart()
     {
-        /*
         super.onRestart();
-        System.out.println("restarted!");
-
-        Bundle extras = getIntent().getExtras();
-        String fromNotification = null;
-
-        if (extras != null)
-        {
-            extras.getString("notificationFragment");
-        }
-
-        //Starts the fragment manager
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        if (fromNotification != null)
-        {
-            MyOrdersFragment myOrdersFragment = new MyOrdersFragment();
-            fragmentTransaction.replace(R.id.content_main, myOrdersFragment, "HOME");
-            fragmentTransaction.commit();
-        }
-        else
-        {
-            // Runs the "Home" fragment
-            HomeFragment homeFragment = new HomeFragment();
-            fragmentTransaction.replace(R.id.content_main, homeFragment, "HOME");
-            Bundle bundle = new Bundle();
-            bundle.putString("message", "Welcome!");
-            homeFragment.setArguments(bundle);
-            fragmentTransaction.commit();
-        }
-        */
     }
 
     @Override
@@ -583,5 +551,39 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.content_main, specificOrderFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onLocationPermissionGiven(boolean permissionGranted)
+    {
+        if (permissionGranted)
+        {
+            System.out.println("Permission granted!");
+            // Fragments
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            JsonParserGetLocation jsonParserGetLocation = null;
+
+            try
+            {
+                jsonParserGetLocation = new JsonParserGetLocation("https://server.bergby.net/QnoMoreAPI/api/menus");
+            } catch (ExecutionException | InterruptedException | JSONException e)
+            {
+                Toast.makeText(this, "Server is offline! Please try again later or check your internet connection", Toast.LENGTH_LONG).show();
+            }
+
+            LocationFragment locationFragment = new LocationFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("location_data", jsonParserGetLocation.getLocationData());
+            locationFragment.setArguments(bundle);
+
+            fragmentTransaction.replace(R.id.content_main, locationFragment, "LOCKED");
+            fragmentTransaction.commit();
+        }
+        else
+        {
+            System.out.println("Permission not granted.");
+        }
     }
 }

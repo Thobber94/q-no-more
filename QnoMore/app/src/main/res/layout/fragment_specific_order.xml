@@ -17,24 +17,6 @@
             android:layout_centerHorizontal="true"
             android:textSize="36sp"/>
 
-    <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="120dp"
-            android:layout_marginTop="79dp"
-            android:layout_below="@+id/specificOrderDate"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/scrollViewSpecificItem">
-
-        <TextView
-                android:text="@string/specificOrderItemExample"
-                android:layout_width="wrap_content"
-                android:layout_height="2dp"
-                android:id="@+id/specificOrderItems"
-                android:textSize="24sp"
-                />
-
-    </ScrollView>
-
     <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -91,5 +73,23 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="110dp"
             android:id="@+id/nfcButton"/>
+
+    <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:layout_marginTop="11dp"
+            android:id="@+id/scrollViewSpecificItem"
+            android:layout_below="@+id/specificOrderIsSold"
+            android:layout_centerHorizontal="true">
+
+        <TextView
+                android:text="@string/specificOrderItemExample"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:id="@+id/specificOrderItems"
+                android:textSize="24sp"
+                />
+
+    </ScrollView>
 
 </RelativeLayout>

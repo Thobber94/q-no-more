@@ -35,6 +35,11 @@ public class HomeFragment extends Fragment
             TextView textView = (TextView) view.findViewById(R.id.tv_home);
             textView.setText(message);
         }
+        else
+        {
+            TextView textView = (TextView) view.findViewById(R.id.tv_home);
+            textView.setText("Welcome! \n To start an order, click the + button!");
+        }
         return view;
     }
 }

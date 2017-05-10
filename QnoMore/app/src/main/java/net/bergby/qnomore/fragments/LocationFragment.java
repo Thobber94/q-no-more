@@ -2,6 +2,7 @@ package net.bergby.qnomore.fragments;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,12 +32,33 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback
     private double longitude;
     private MapView mapView;
     private GoogleMap map;
+    private LocationPermissionInterface mCallBack;
 
     public LocationFragment()
     {
         // Required empty public constructor
     }
 
+    public interface LocationPermissionInterface
+    {
+        void onLocationPermissionGiven(boolean permissionGranted);
+    }
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+
+        try
+        {
+            mCallBack = (LocationPermissionInterface) context;
+        }
+        catch (ClassCastException e)
+        {
+            throw new ClassCastException(context.toString()
+                    + " must implement FoodDrinkButtonChosenListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,7 +96,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+            if (shouldShowRequestPermissionRationale(
                     Manifest.permission.ACCESS_FINE_LOCATION))
             {
 
@@ -84,7 +106,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback
                 //  TODO: Prompt with explanation!
 
                 //Prompt the user once explanation has been shown
-                ActivityCompat.requestPermissions(getActivity(),
+                requestPermissions(
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
 
@@ -92,7 +114,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback
             else
             {
                 // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(getActivity(),
+                requestPermissions(
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
@@ -147,6 +169,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults)
     {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode)
         {
             case MY_PERMISSIONS_REQUEST_LOCATION:
@@ -162,6 +185,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback
                     {
                         map.setMyLocationEnabled(true);
                         map.getUiSettings().setMyLocationButtonEnabled(true);
+                        mCallBack.onLocationPermissionGiven(true);
                     }
                 }
                 else
@@ -171,9 +195,9 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback
                     Toast.makeText(getContext(), "permission denied", Toast.LENGTH_LONG).show();
                     map.getUiSettings().setMyLocationButtonEnabled(false);
                     map.setMyLocationEnabled(false);
+                    mCallBack.onLocationPermissionGiven(false);
                 }
             }
-
         }
     }
 

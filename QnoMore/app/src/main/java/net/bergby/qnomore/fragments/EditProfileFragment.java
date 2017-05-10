@@ -34,6 +34,10 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         view = inflater.inflate(R.layout.profile_main, container, false);
         Button button = (Button) view.findViewById(R.id.reloadButton);
         button.setOnClickListener(this);
+
+        String currentFragment = getClass().getName();
+        System.out.println(currentFragment);
+
         return view;
     }
 
@@ -48,7 +52,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(view.getContext())
-                .enableAutoManage((FragmentActivity) getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
