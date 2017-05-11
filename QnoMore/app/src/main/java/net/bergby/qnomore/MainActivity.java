@@ -186,14 +186,28 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        // Fragments
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings)
         {
+            // Fragment handling
+            EditProfileFragment editProfileFragment = new EditProfileFragment();
+
+            navigationView.setCheckedItem(R.id.nav_account_circle);
+            fragmentTransaction.replace(R.id.content_main, editProfileFragment, "LOCKED").commit();
+            if (findViewById(R.id.fab).getVisibility() == View.VISIBLE)
+            {
+                findViewById(R.id.fab).setVisibility(View.GONE);
+            }
             return true;
         }
 
