@@ -586,7 +586,7 @@ public class MainActivity extends AppCompatActivity
             locationFragment.setArguments(bundle);
 
             fragmentTransaction.replace(R.id.content_main, locationFragment, "LOCKED");
-            fragmentTransaction.commit();
+            fragmentTransaction.commitAllowingStateLoss();
         }
     }
 }
